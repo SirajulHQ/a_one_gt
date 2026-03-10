@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
               //   style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
               // ),
               Image.asset(
-                "assets/icons/logo.png",
+                "assets/logos/a_one_logo.png",
                 height: Dimensions.height45 * 2,
               ),
             ],

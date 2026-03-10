@@ -1,3 +1,4 @@
+import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -20,35 +21,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
   ];
 
   final List<Map<String, String>> categories = [
-    {
-      "title": "Grocery",
-      "image": "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
-    },
-    {
-      "title": "Electronics",
-      "image": "https://cdn-icons-png.flaticon.com/512/1041/1041916.png",
-    },
-    {
-      "title": "Cloths",
-      "image": "https://cdn-icons-png.flaticon.com/512/892/892458.png",
-    },
-    {
-      "title": "Automotive",
-      "image": "https://cdn-icons-png.flaticon.com/512/743/743922.png",
-    },
-    {
-      "title": "Jewellery",
-      "image": "https://cdn-icons-png.flaticon.com/512/992/992651.png",
-    },
+    {"title": "Grocery", "image": "assets/images/grocery.png"},
+    {"title": "Electronics", "image": "assets/images/electronics.jpg"},
+    {"title": "Cloths", "image": "assets/images/cloths.jpg"},
+    {"title": "Automotive", "image": "assets/images/automotive.jpg"},
+    {"title": "Jewellery", "image": "assets/images/jewelry.jpg"},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF4F4F4),
+      backgroundColor: Appcolors.background,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 + 5),
           child: Column(
             children: [
               SizedBox(height: Dimensions.height10),
@@ -58,11 +44,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset(
-                    "assets/icons/logo.png",
-                    height: Dimensions.height45,
+                    "assets/logos/a_one_logo.png",
+                    height: Dimensions.height45 - 10,
                     fit: BoxFit.contain,
                   ),
-
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -87,7 +72,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 ],
               ),
 
-              SizedBox(height: Dimensions.height20),
+              SizedBox(height: Dimensions.height10),
 
               /// Title
               Align(
@@ -95,7 +80,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 child: Text(
                   "Shop by Categories",
                   style: TextStyle(
-                    fontSize: Dimensions.font16,
+                    fontSize: Dimensions.font20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -120,7 +105,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     items: banners.map((image) {
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(
-                          Dimensions.radius20,
+                          Dimensions.radius20 - 10,
                         ),
                         child: Image.network(
                           image,
@@ -170,15 +155,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  /// GRID VIEW
+  /// GRID VIEW (FIXED - no stretching)
   Widget gridView() {
     return GridView.builder(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
       itemCount: categories.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: Dimensions.width15,
         mainAxisSpacing: Dimensions.height15,
-        childAspectRatio: 1,
+        mainAxisExtent: 160,
       ),
       itemBuilder: (context, index) {
         final category = categories[index];
@@ -191,13 +178,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                category["image"]!,
-                height: Dimensions.height45 * 2,
-              ),
-
+              Image.asset(category["image"]!, height: Dimensions.height45 * 2),
               SizedBox(height: Dimensions.height10),
-
               Text(
                 category["title"]!,
                 style: TextStyle(fontSize: Dimensions.font16),
@@ -226,13 +208,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
           ),
           child: Row(
             children: [
-              Image.network(category["image"]!, height: Dimensions.height45),
-
+              Image.asset(category["image"]!, height: Dimensions.height45),
               SizedBox(width: Dimensions.width15),
-
               Text(
                 category["title"]!,
-                style: TextStyle(fontSize: Dimensions.font20),
+                style: TextStyle(fontSize: Dimensions.font16),
               ),
             ],
           ),
