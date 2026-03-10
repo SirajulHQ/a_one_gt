@@ -1,4 +1,5 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,14 +29,18 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: const BoxDecoration(
           //   image: DecorationImage(image: AssetImage(""), fit: BoxFit.cover),
         ),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.login_outlined),
-              Text(
-                "Splash Screen",
-                style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+              // Icon(Icons.login_outlined),
+              // Text(
+              //   "Splash Screen",
+              //   style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+              // ),
+              Image.asset(
+                "assets/icons/logo.png",
+                height: Dimensions.height45 * 2,
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -47,20 +48,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
       backgroundColor: const Color(0xffF4F4F4),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
           child: Column(
             children: [
-              const SizedBox(height: 10),
+              SizedBox(height: Dimensions.height10),
 
               /// Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Image.network(
-                  //   "https://picsum.photos/200/80",
-                  //   height: 35,
-                  // ),
-                  Image.asset("assets/icons/logo.png", height: 100),
+                  Image.asset(
+                    "assets/icons/logo.png",
+                    height: Dimensions.height45,
+                    fit: BoxFit.contain,
+                  ),
 
                   GestureDetector(
                     onTap: () {
@@ -69,40 +70,45 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       });
                     },
                     child: Container(
-                      height: 45,
-                      width: 45,
+                      height: Dimensions.height45,
+                      width: Dimensions.height45,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(
+                          Dimensions.radius20,
+                        ),
                       ),
                       child: Icon(
                         isGrid ? Icons.menu : Icons.grid_view,
-                        size: 22,
+                        size: Dimensions.iconSize24,
                       ),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: Dimensions.height20),
 
               /// Title
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Shop by Categories",
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: Dimensions.font16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              SizedBox(height: Dimensions.height15),
 
               /// Carousel
               Column(
                 children: [
                   CarouselSlider(
                     options: CarouselOptions(
-                      height: 150,
+                      height: Dimensions.height30 * 5,
                       viewportFraction: 1,
                       autoPlay: true,
                       onPageChanged: (index, reason) {
@@ -113,7 +119,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     ),
                     items: banners.map((image) {
                       return ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(
+                          Dimensions.radius20,
+                        ),
                         child: Image.network(
                           image,
                           fit: BoxFit.cover,
@@ -123,21 +131,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     }).toList(),
                   ),
 
-                  const SizedBox(height: 10),
+                  SizedBox(height: Dimensions.height10),
 
                   /// Indicator
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: banners.asMap().entries.map((entry) {
                       return Container(
-                        width: currentIndex == entry.key ? 20 : 6,
-                        height: 6,
-                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        width: currentIndex == entry.key
+                            ? Dimensions.width20
+                            : Dimensions.width10,
+                        height: Dimensions.height10 / 2,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: Dimensions.width10 / 2,
+                        ),
                         decoration: BoxDecoration(
                           color: currentIndex == entry.key
                               ? Colors.green
                               : Colors.grey.shade400,
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(
+                            Dimensions.radius20,
+                          ),
                         ),
                       );
                     }).toList(),
@@ -145,7 +159,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: Dimensions.height20),
 
               /// Categories
               Expanded(child: isGrid ? gridView() : listView()),
@@ -160,10 +174,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget gridView() {
     return GridView.builder(
       itemCount: categories.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
+        crossAxisSpacing: Dimensions.width15,
+        mainAxisSpacing: Dimensions.height15,
         childAspectRatio: 1,
       ),
       itemBuilder: (context, index) {
@@ -172,16 +186,22 @@ class _CategoriesPageState extends State<CategoriesPage> {
         return Container(
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(Dimensions.radius20),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(category["image"]!, height: 90),
+              Image.network(
+                category["image"]!,
+                height: Dimensions.height45 * 2,
+              ),
 
-              const SizedBox(height: 10),
+              SizedBox(height: Dimensions.height10),
 
-              Text(category["title"]!, style: const TextStyle(fontSize: 16)),
+              Text(
+                category["title"]!,
+                style: TextStyle(fontSize: Dimensions.font16),
+              ),
             ],
           ),
         );
@@ -193,23 +213,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget listView() {
     return ListView.separated(
       itemCount: categories.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 15),
+      separatorBuilder: (context, index) =>
+          SizedBox(height: Dimensions.height15),
       itemBuilder: (context, index) {
         final category = categories[index];
 
         return Container(
-          padding: const EdgeInsets.all(15),
+          padding: EdgeInsets.all(Dimensions.height15),
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(Dimensions.radius20),
           ),
           child: Row(
             children: [
-              Image.network(category["image"]!, height: 45),
+              Image.network(category["image"]!, height: Dimensions.height45),
 
-              const SizedBox(width: 15),
+              SizedBox(width: Dimensions.width15),
 
-              Text(category["title"]!, style: const TextStyle(fontSize: 18)),
+              Text(
+                category["title"]!,
+                style: TextStyle(fontSize: Dimensions.font20),
+              ),
             ],
           ),
         );
