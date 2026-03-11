@@ -23,27 +23,15 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolors.background,
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          //   image: DecorationImage(image: AssetImage(""), fit: BoxFit.cover),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Icon(Icons.login_outlined),
-              // Text(
-              //   "Splash Screen",
-              //   style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
-              // ),
-              Image.asset(
-                "assets/logos/a_one_logo.png",
-                height: Dimensions.height45 * 2,
-              ),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/logos/a_one_logo.png",
+              height: Dimensions.height45 * 2,
+            ),
+          ],
         ),
       ),
     );
