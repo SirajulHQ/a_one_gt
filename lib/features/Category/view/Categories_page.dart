@@ -1,6 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
-import 'package:a_one_gt/features/main_navigation/main_navigation_widget.dart';
+import 'package:a_one_gt/features/main_navigation/view/main_navigation_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

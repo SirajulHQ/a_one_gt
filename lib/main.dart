@@ -6,7 +6,7 @@ import 'package:a_one_gt/features/auth/view/forgot_Password.dart';
 import 'package:a_one_gt/features/auth/view/password_Signin_Page.dart';
 import 'package:a_one_gt/features/auth/view/splash_screen.dart';
 import 'package:a_one_gt/features/home/view/home_page.dart';
-import 'package:a_one_gt/features/main_navigation/main_navigation_widget.dart';
+import 'package:a_one_gt/features/main_navigation/view/main_navigation_page.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
