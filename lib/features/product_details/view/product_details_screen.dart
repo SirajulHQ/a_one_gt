@@ -1,7 +1,10 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
+import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -353,7 +356,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                final cartService = Provider.of<CartService>(
+                  context,
+                  listen: false,
+                );
+                cartService.addItem(product, quantity: quantity);
+
+                // Show success message
+                toastification.show(
+                  context: context,
+                  title: Text('${product.name} added to cart!'),
+                  type: ToastificationType.success,
+                  style: ToastificationStyle.minimal,
+                  autoCloseDuration: const Duration(seconds: 2),
+                  alignment: Alignment.topCenter,
+                  borderRadius: BorderRadius.circular(10),
+                );
+              },
               child: const Text(
                 "Add to Cart",
                 style: TextStyle(

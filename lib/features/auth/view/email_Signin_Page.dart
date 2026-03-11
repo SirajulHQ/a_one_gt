@@ -1,6 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EmailSigninPage extends StatelessWidget {
   const EmailSigninPage({super.key});
@@ -58,6 +59,7 @@ class EmailSigninPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    HapticFeedback.lightImpact();
                     Navigator.pushNamed(context, '/password');
                   },
                   child: const Text(
@@ -72,6 +74,7 @@ class EmailSigninPage extends StatelessWidget {
               /// Create account
               InkWell(
                 onTap: () {
+                  HapticFeedback.lightImpact();
                   Navigator.pushNamed(context, '/create_account');
                 },
                 child: Row(

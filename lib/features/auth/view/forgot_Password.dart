@@ -1,6 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
@@ -28,6 +29,7 @@ class ForgotPasswordPage extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                   onPressed: () {
+                    HapticFeedback.lightImpact();
                     Navigator.pop(context);
                   },
                 ),

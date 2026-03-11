@@ -4,6 +4,7 @@ import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/home/widgets/product_card_widget.dart';
 import 'package:a_one_gt/features/product_details/view/product_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   final String category;
@@ -23,26 +24,43 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // Initialize with products from the selected category
-    displayedProducts = dummyProducts
-        .where((product) => product.category == widget.category)
-        .toList();
+    if (widget.category == "All") {
+      displayedProducts = dummyProducts;
+    } else {
+      displayedProducts = dummyProducts
+          .where((product) => product.category == widget.category)
+          .toList();
+    }
   }
 
   // 2. Logic to filter products based on search query
   void _runFilter(String query) {
     List<Product> results = [];
     if (query.isEmpty) {
-      results = dummyProducts
-          .where((product) => product.category == widget.category)
-          .toList();
+      if (widget.category == "All") {
+        results = dummyProducts;
+      } else {
+        results = dummyProducts
+            .where((product) => product.category == widget.category)
+            .toList();
+      }
     } else {
-      results = dummyProducts
-          .where(
-            (product) =>
-                product.category == widget.category &&
-                product.name.toLowerCase().contains(query.toLowerCase()),
-          )
-          .toList();
+      if (widget.category == "All") {
+        results = dummyProducts
+            .where(
+              (product) =>
+                  product.name.toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList();
+      } else {
+        results = dummyProducts
+            .where(
+              (product) =>
+                  product.category == widget.category &&
+                  product.name.toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList();
+      }
     }
 
     setState(() {
@@ -181,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 child: TextField(
-                  controller: _searchController, 
+                  controller: _searchController,
                   onChanged: (value) => _runFilter(value),
                   textAlignVertical: TextAlignVertical.center,
                   style: const TextStyle(fontSize: 14),
@@ -264,6 +282,7 @@ class _HomePageState extends State<HomePage> {
                 return ProductCard(
                   product: product,
                   onTap: () {
+                    HapticFeedback.lightImpact();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
