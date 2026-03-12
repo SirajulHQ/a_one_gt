@@ -1,4 +1,5 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/cart/models/cart_item.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7FB),
+      backgroundColor: Appcolors.background,
 
       /// APPBAR
       appBar: AppBar(
@@ -225,10 +226,15 @@ class CartPage extends StatelessWidget {
 
   Widget _buildBottomCheckout(BuildContext context, CartService cartService) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 30),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+      padding: EdgeInsets.fromLTRB(
+        Dimensions.width30 + 10,
+        Dimensions.height15 * 0,
+        Dimensions.width30 + 10,
+        Dimensions.height45 * 2.2,
+      ),
+      decoration: BoxDecoration(
+        color: Appcolors.background,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Row(
         children: [
@@ -238,21 +244,27 @@ class CartPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   "Total Price",
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: Dimensions.font16 - 5,
+                  ),
                 ),
                 Text(
                   "AED ${cartService.totalPrice.toStringAsFixed(2)}",
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: Dimensions.font20 + 0.8,
                     fontWeight: FontWeight.bold,
                     color: Appcolors.primaryGreen,
                   ),
                 ),
                 Text(
                   "${cartService.itemCount} items",
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: Dimensions.font16 - 5,
+                  ),
                 ),
               ],
             ),
@@ -262,14 +274,13 @@ class CartPage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolors.primaryGreen,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Color.fromARGB(255, 13, 85, 43),
+                padding: EdgeInsets.symmetric(vertical: Dimensions.height15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
               onPressed: () {
-                // TODO: Implement checkout functionality
                 toastification.show(
                   context: context,
                   title: const Text('Checkout functionality coming soon!'),
