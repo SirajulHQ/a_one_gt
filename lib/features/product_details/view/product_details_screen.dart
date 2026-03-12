@@ -1,4 +1,5 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
@@ -166,8 +167,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
             top: -10,
             right: -10,
             child: Container(
-              width: 90,
-              height: 90,
+              // width: 90,
+              // height: 90,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Appcolors.primaryGreen.withOpacity(0.05),
@@ -178,7 +179,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
             tag: 'product_image_${product.name}',
             child: Image.asset(
               product.image,
-              height: 230,
+              // height: 230,
               width: double.infinity,
               fit: BoxFit.contain,
             ),
@@ -397,14 +398,14 @@ class SectionTitle extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 4,
+          width: Dimensions.width10,
           height: 18,
           decoration: BoxDecoration(
             color: Appcolors.primaryGreen,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: Dimensions.width20),
         Text(
           title,
           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),

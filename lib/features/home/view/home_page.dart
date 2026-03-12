@@ -1,4 +1,5 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/home/widgets/product_card_widget.dart';
@@ -111,8 +112,8 @@ class _HomePageState extends State<HomePage> {
                     top: -20,
                     right: -20,
                     child: Container(
-                      width: 120,
-                      height: 120,
+                      width: Dimensions.width30 * 8.5,
+                      height: Dimensions.height45 * 2.5,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.08),
@@ -123,8 +124,8 @@ class _HomePageState extends State<HomePage> {
                     bottom: 10,
                     right: 60,
                     child: Container(
-                      width: 60,
-                      height: 60,
+                      width: Dimensions.width30 * 4,
+                      height: Dimensions.height45 * 1.3,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.06),
@@ -242,18 +243,18 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 children: [
                   Container(
-                    width: 4,
-                    height: 20,
+                    width: Dimensions.width10,
+                    height: Dimensions.height20,
                     decoration: BoxDecoration(
                       color: Appcolors.primaryGreen,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  const Text(
+                  SizedBox(width: Dimensions.width20),
+                  Text(
                     "Best Deal",
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: Dimensions.font16 + 2,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.3,
                       color: Color(0xFF1A1A2E),

@@ -118,8 +118,8 @@ class CartPage extends StatelessWidget {
         children: [
           /// PRODUCT IMAGE
           Container(
-            width: 80,
-            height: 80,
+            width: Dimensions.width30 * 6.5,
+            height: Dimensions.height45 * 1.7,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: const Color(0xFFF6F7FB),
@@ -137,7 +137,7 @@ class CartPage extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(width: 14),
+          SizedBox(width: Dimensions.width30),
 
           /// PRODUCT INFO
           Expanded(
@@ -162,7 +162,7 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                SizedBox(height: Dimensions.height10),
 
                 Row(
                   children: [
@@ -170,12 +170,12 @@ class CartPage extends StatelessWidget {
                       Icons.remove,
                       () => cartService.decrementQuantity(cartItem.product.id),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: Dimensions.width20),
                     Text(
                       "${cartItem.quantity}",
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: Dimensions.width20),
                     _quantityButton(
                       Icons.add,
                       () => cartService.incrementQuantity(cartItem.product.id),

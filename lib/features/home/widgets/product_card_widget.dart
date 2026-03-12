@@ -1,4 +1,5 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
@@ -38,13 +39,13 @@ class ProductCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
-                    height: 100,
-                    width: 180,
+                    height: Dimensions.height45 * 2.0,
+                    width: Dimensions.width30 * 12,
                     color: Colors.green.shade50,
                     child: Image.asset(
                       product.image,
-                      height: 80,
-                      width: 150,
+                      // height: 80,
+                      // width: 150,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(

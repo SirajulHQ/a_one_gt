@@ -55,8 +55,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        height: Dimensions.height45 - 10,
-                        width: 100,
+                        // height: Dimensions.height45 - 10,
+                        // width: Dimensions.height45 * 2,
                         color: Colors.grey.shade300,
                         child: const Icon(Icons.image_not_supported),
                       );
