@@ -211,7 +211,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          /// HORIZONTAL OFFER LIST (ADDED)
+          /// HORIZONTAL OFFER LIST
           SliverToBoxAdapter(
             child: SizedBox(
               height: 180,
@@ -228,7 +228,6 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        /// IMAGE CARD
                         Container(
                           height: 110,
                           decoration: BoxDecoration(
@@ -267,7 +266,6 @@ class _HomePageState extends State<HomePage> {
 
                         const SizedBox(height: 8),
 
-                        /// TITLE
                         Text(
                           sub,
                           style: const TextStyle(
@@ -278,7 +276,6 @@ class _HomePageState extends State<HomePage> {
 
                         const SizedBox(height: 4),
 
-                        /// SUBTEXT
                         Row(
                           children: const [
                             Icon(Icons.star, size: 14, color: Colors.teal),
@@ -321,7 +318,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
-
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: Dimensions.width15,
@@ -337,7 +333,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -345,12 +340,12 @@ class _HomePageState extends State<HomePage> {
                           subCategoryImages[sub] ?? "assets/images/grocery.png",
                           height: 60,
                         ),
-
                         const SizedBox(height: 12),
-
                         Text(
                           sub,
                           textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -366,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 3,
                 mainAxisSpacing: 14,
                 crossAxisSpacing: 14,
-                childAspectRatio: 1,
+                childAspectRatio: 0.85,
               ),
             ),
           ),

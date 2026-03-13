@@ -24,7 +24,7 @@ final Map<String, List<String>> subCategories = {
     "Spices",
     "Pulses",
     "Rice",
-    "Pickles & Sauc",
+    "Pickles & Sauces",
     "Jam",
     "Dry Fish",
     "Biscuits",
