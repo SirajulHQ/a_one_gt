@@ -106,6 +106,19 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   Positioned(
+                    bottom: 10,
+                    right: 60,
+                    child: Container(
+                      width: Dimensions.width30 * 4,
+                      height: Dimensions.height45 * 1.3,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.06),
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
                     left: 20,
                     bottom: 24,
                     child: Column(
@@ -160,7 +173,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // ── Section header ───────────────────────────────────────────
+          /// SECTION HEADER
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
@@ -198,7 +211,96 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // ── Grid ──────────────────────────────────────────
+          /// HORIZONTAL OFFER LIST (ADDED)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 180,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(left: 16, top: 16),
+                scrollDirection: Axis.horizontal,
+                itemCount: displayedSubCategories.length,
+                itemBuilder: (context, index) {
+                  final sub = displayedSubCategories[index];
+
+                  return Container(
+                    width: 150,
+                    margin: const EdgeInsets.only(right: 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// IMAGE CARD
+                        Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                subCategoryImages[sub] ??
+                                    "assets/images/grocery.png",
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.6),
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                            alignment: Alignment.bottomLeft,
+                            child: const Text(
+                              "ITEMS\nAT \$25",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        /// TITLE
+                        Text(
+                          sub,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+
+                        const SizedBox(height: 4),
+
+                        /// SUBTEXT
+                        Row(
+                          children: const [
+                            Icon(Icons.star, size: 14, color: Colors.teal),
+                            SizedBox(width: 4),
+                            Text(
+                              "4.8 • 15-20mins",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+
+          /// GRID
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
             sliver: SliverGrid(

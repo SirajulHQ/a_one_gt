@@ -122,6 +122,19 @@ class _ProductHomePageState extends State<ProductHomePage> {
                   ),
 
                   Positioned(
+                    bottom: 10,
+                    right: 60,
+                    child: Container(
+                      width: Dimensions.width30 * 4,
+                      height: Dimensions.height45 * 1.3,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.06),
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
                     left: 20,
                     bottom: 24,
                     child: Column(
