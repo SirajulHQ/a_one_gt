@@ -1,9 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
-import 'package:a_one_gt/dummy_data/dummy_model.dart';
-import 'package:a_one_gt/features/home/widgets/product_card_widget.dart';
-import 'package:a_one_gt/features/product_details/view/product_details_screen.dart';
+import 'package:a_one_gt/features/product/view/product_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,55 +15,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // 1. Add state variables
-  late List<Product> displayedProducts;
+  late List<String> displayedSubCategories;
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Initialize with products from the selected category
+
     if (widget.category == "All") {
-      displayedProducts = dummyProducts;
+      displayedSubCategories = subCategories.values.expand((e) => e).toList();
     } else {
-      displayedProducts = dummyProducts
-          .where((product) => product.category == widget.category)
-          .toList();
+      displayedSubCategories = subCategories[widget.category] ?? [];
     }
   }
 
-  // 2. Logic to filter products based on search query
   void _runFilter(String query) {
-    List<Product> results = [];
+    List<String> results = [];
+
     if (query.isEmpty) {
       if (widget.category == "All") {
-        results = dummyProducts;
+        results = subCategories.values.expand((e) => e).toList();
       } else {
-        results = dummyProducts
-            .where((product) => product.category == widget.category)
-            .toList();
+        results = subCategories[widget.category] ?? [];
       }
     } else {
-      if (widget.category == "All") {
-        results = dummyProducts
-            .where(
-              (product) =>
-                  product.name.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
-      } else {
-        results = dummyProducts
-            .where(
-              (product) =>
-                  product.category == widget.category &&
-                  product.name.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
-      }
+      final source = widget.category == "All"
+          ? subCategories.values.expand((e) => e).toList()
+          : subCategories[widget.category] ?? [];
+
+      results = source
+          .where((sub) => sub.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     }
 
     setState(() {
-      displayedProducts = results;
+      displayedSubCategories = results;
     });
   }
 
@@ -82,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          // ── Curved SliverAppBar ──────────────────────────────────────
+          /// APP BAR
           SliverAppBar(
             expandedHeight: 140,
             pinned: true,
@@ -120,18 +104,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 10,
-                    right: 60,
-                    child: Container(
-                      width: Dimensions.width30 * 4,
-                      height: Dimensions.height45 * 1.3,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.06),
-                      ),
-                    ),
-                  ),
+
                   Positioned(
                     left: 20,
                     bottom: 24,
@@ -148,13 +121,14 @@ class _HomePageState extends State<HomePage> {
                             letterSpacing: -0.5,
                           ),
                         ),
+
                         const SizedBox(height: 2),
+
                         Text(
-                          "${displayedProducts.length} products available",
+                          "${displayedSubCategories.length} subcategories",
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.75),
                             fontSize: 13,
-                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -163,73 +137,23 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.notifications_none,
-                    color: Colors.white,
-                    size: 22,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
           ),
 
-          // ── Search bar (Functional) ──────────────────────────────────
+          /// SEARCH
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (value) => _runFilter(value),
-                  textAlignVertical: TextAlignVertical.center,
-                  style: const TextStyle(fontSize: 14),
-                  decoration: InputDecoration(
-                    hintText: "Search products...",
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade400,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search_rounded,
-                      size: 20,
-                      color: Appcolors.primaryGreen,
-                    ),
-                    isDense: true,
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                        color: Appcolors.primaryGreen.withOpacity(0.4),
-                        width: 1.5,
-                      ),
-                    ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _runFilter,
+                decoration: InputDecoration(
+                  hintText: "Search subcategories...",
+                  prefixIcon: Icon(Icons.search, color: Appcolors.primaryGreen),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
                   ),
                 ),
               ),
@@ -274,31 +198,73 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // ── Product grid ──────────────────────────────────────────
+          // ── Grid ──────────────────────────────────────────
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate((context, index) {
-                final product = displayedProducts[index];
-                return ProductCard(
-                  product: product,
+                final sub = displayedSubCategories[index];
+
+                return GestureDetector(
                   onTap: () {
                     HapticFeedback.lightImpact();
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ProductDetailScreen(product: product),
+                        builder: (_) => ProductHomePage(
+                          category: widget.category,
+                          subCategory: sub,
+                        ),
                       ),
                     );
                   },
+
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.width15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          subCategoryImages[sub] ?? "assets/images/grocery.png",
+                          height: 60,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        Text(
+                          sub,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
-              }, childCount: displayedProducts.length),
+              }, childCount: displayedSubCategories.length),
+
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 0,
+                crossAxisCount: 3,
+                mainAxisSpacing: 14,
                 crossAxisSpacing: 14,
-                childAspectRatio: 0.95,
+                childAspectRatio: 1,
               ),
             ),
           ),
