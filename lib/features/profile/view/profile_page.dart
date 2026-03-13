@@ -141,7 +141,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         child: ClipOval(
                           child: Image.network(
-                            "https://i.pravatar.cc/300",
+                            "https://i.pravatar.cc/150?img=68",
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Icon(
