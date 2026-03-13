@@ -296,9 +296,9 @@ class _HomePageState extends State<HomePage> {
               }, childCount: displayedProducts.length),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 14,
+                mainAxisSpacing: 0,
                 crossAxisSpacing: 14,
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.95,
               ),
             ),
           ),
