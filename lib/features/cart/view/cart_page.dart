@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+  final String category;
+  const CartPage({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,12 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          "My Cart",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        title: Text(
+          "$category Cart",
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -45,7 +49,9 @@ class CartPage extends StatelessWidget {
       /// BODY
       body: Consumer<CartService>(
         builder: (context, cartService, child) {
-          if (cartService.isEmpty) {
+          final items = cartService.itemsForCategory(category);
+
+          if (items.isEmpty) {
             return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -76,10 +82,9 @@ class CartPage extends StatelessWidget {
 
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: cartService.items.length,
+            itemCount: items.length,
             itemBuilder: (context, index) {
-              final cartItem = cartService.items[index];
-              return _buildCartItem(context, cartItem, cartService);
+              return _buildCartItem(context, items[index], cartService);
             },
           );
         },
@@ -88,7 +93,8 @@ class CartPage extends StatelessWidget {
       /// BOTTOM BAR
       bottomNavigationBar: Consumer<CartService>(
         builder: (context, cartService, child) {
-          if (cartService.isEmpty) return const SizedBox.shrink();
+          if (cartService.isEmptyForCategory(category))
+            return const SizedBox.shrink();
           return _buildBottomCheckout(context, cartService);
         },
       ),
@@ -151,9 +157,7 @@ class CartPage extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-
                 const SizedBox(height: 6),
-
                 Text(
                   "AED ${cartItem.product.price}",
                   style: TextStyle(
@@ -161,14 +165,15 @@ class CartPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 SizedBox(height: Dimensions.height10),
-
                 Row(
                   children: [
                     _quantityButton(
                       Icons.remove,
-                      () => cartService.decrementQuantity(cartItem.product.id),
+                      () => cartService.decrementQuantity(
+                        cartItem.product.id,
+                        category,
+                      ),
                     ),
                     SizedBox(width: Dimensions.width20),
                     Text(
@@ -178,7 +183,10 @@ class CartPage extends StatelessWidget {
                     SizedBox(width: Dimensions.width20),
                     _quantityButton(
                       Icons.add,
-                      () => cartService.incrementQuantity(cartItem.product.id),
+                      () => cartService.incrementQuantity(
+                        cartItem.product.id,
+                        category,
+                      ),
                     ),
                   ],
                 ),
@@ -191,7 +199,7 @@ class CartPage extends StatelessWidget {
             icon: const Icon(Icons.delete_outline, color: Colors.red),
             onPressed: () {
               HapticFeedback.mediumImpact();
-              cartService.removeItem(cartItem.product.id);
+              cartService.removeItem(cartItem.product.id, category);
               toastification.show(
                 context: context,
                 title: Text('${cartItem.product.name} removed from cart'),
@@ -252,7 +260,7 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "AED ${cartService.totalPrice.toStringAsFixed(2)}",
+                  "AED ${cartService.totalPriceForCategory(category).toStringAsFixed(2)}",
                   style: TextStyle(
                     fontSize: Dimensions.font20 + 0.8,
                     fontWeight: FontWeight.bold,
@@ -260,7 +268,7 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "${cartService.itemCount} items",
+                  "${cartService.itemCountForCategory(category)} items",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: Dimensions.font16 - 5,
@@ -274,7 +282,7 @@ class CartPage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 13, 85, 43),
+                backgroundColor: const Color.fromARGB(255, 13, 85, 43),
                 padding: EdgeInsets.symmetric(vertical: Dimensions.height15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),

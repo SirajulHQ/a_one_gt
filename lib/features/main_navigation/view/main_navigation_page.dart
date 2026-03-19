@@ -47,13 +47,12 @@ class _MainNavigationPageState extends State<MainNavigationPage>
 
     _pages = [
       HomePage(category: widget.category),
-      const CartPage(),
+      CartPage(category: widget.category),
       const ProfilePage(),
     ];
   }
 
   @override
-
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => MainNavigationController(),
@@ -69,7 +68,7 @@ class _MainNavigationPageState extends State<MainNavigationPage>
               selectedIndex: controller.selectedIndex,
               onTap: controller.onItemTapped,
               items: _navItems,
-              cartCount: cartService.itemCount,
+              cartCount: cartService.itemCountForCategory(widget.category),
               primaryGreen: _primaryGreen,
               darkGreen: _darkGreen,
             ),

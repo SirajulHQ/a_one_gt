@@ -7,87 +7,95 @@ class CartService extends ChangeNotifier {
   factory CartService() => _instance;
   CartService._internal();
 
-  final List<CartItem> _items = [];
+  // Per-category cart storage
+  final Map<String, List<CartItem>> _categoryItems = {};
 
-  List<CartItem> get items => List.unmodifiable(_items);
+  List<CartItem> itemsForCategory(String category) =>
+      List.unmodifiable(_categoryItems[category] ?? []);
 
-  int get itemCount => _items.fold(0, (sum, item) => sum + item.quantity);
+  int itemCountForCategory(String category) => (_categoryItems[category] ?? [])
+      .fold(0, (sum, item) => sum + item.quantity);
 
-  double get totalPrice =>
-      _items.fold(0.0, (sum, item) => sum + item.totalPrice);
+  double totalPriceForCategory(String category) =>
+      (_categoryItems[category] ?? []).fold(
+        0.0,
+        (sum, item) => sum + item.totalPrice,
+      );
 
-  bool get isEmpty => _items.isEmpty;
+  bool isEmptyForCategory(String category) =>
+      (_categoryItems[category] ?? []).isEmpty;
 
-  bool get isNotEmpty => _items.isNotEmpty;
+  // Total across all categories (for global badge if needed)
+  int get totalItemCount => _categoryItems.values.fold(
+    0,
+    (sum, list) => sum + list.fold(0, (s, i) => s + i.quantity),
+  );
 
   void addItem(Product product, {int quantity = 1}) {
-    final existingIndex = _items.indexWhere(
+    final category = product.category;
+    _categoryItems.putIfAbsent(category, () => []);
+    final list = _categoryItems[category]!;
+    final existingIndex = list.indexWhere(
       (item) => item.product.id == product.id,
     );
 
     if (existingIndex >= 0) {
-      // Product already exists, update quantity
-      _items[existingIndex].quantity += quantity;
+      list[existingIndex].quantity += quantity;
     } else {
-      // Add new product
-      _items.add(CartItem(product: product, quantity: quantity));
+      list.add(CartItem(product: product, quantity: quantity));
     }
-
     notifyListeners();
   }
 
-  void removeItem(String productId) {
-    _items.removeWhere((item) => item.product.id == productId);
+  void removeItem(String productId, String category) {
+    _categoryItems[category]?.removeWhere(
+      (item) => item.product.id == productId,
+    );
     notifyListeners();
   }
 
-  void updateQuantity(String productId, int newQuantity) {
-    if (newQuantity <= 0) {
-      removeItem(productId);
-      return;
-    }
-
-    final index = _items.indexWhere((item) => item.product.id == productId);
+  void incrementQuantity(String productId, String category) {
+    final list = _categoryItems[category];
+    if (list == null) return;
+    final index = list.indexWhere((item) => item.product.id == productId);
     if (index >= 0) {
-      _items[index].quantity = newQuantity;
+      list[index].quantity++;
       notifyListeners();
     }
   }
 
-  void incrementQuantity(String productId) {
-    final index = _items.indexWhere((item) => item.product.id == productId);
+  void decrementQuantity(String productId, String category) {
+    final list = _categoryItems[category];
+    if (list == null) return;
+    final index = list.indexWhere((item) => item.product.id == productId);
     if (index >= 0) {
-      _items[index].quantity++;
-      notifyListeners();
-    }
-  }
-
-  void decrementQuantity(String productId) {
-    final index = _items.indexWhere((item) => item.product.id == productId);
-    if (index >= 0) {
-      if (_items[index].quantity > 1) {
-        _items[index].quantity--;
+      if (list[index].quantity > 1) {
+        list[index].quantity--;
       } else {
-        _items.removeAt(index);
+        list.removeAt(index);
       }
       notifyListeners();
     }
   }
 
-  void clearCart() {
-    _items.clear();
+  void clearCart(String category) {
+    _categoryItems[category]?.clear();
     notifyListeners();
   }
 
-  CartItem? getItem(String productId) {
+  CartItem? getItem(String productId, String category) {
     try {
-      return _items.firstWhere((item) => item.product.id == productId);
+      return (_categoryItems[category] ?? []).firstWhere(
+        (item) => item.product.id == productId,
+      );
     } catch (e) {
       return null;
     }
   }
 
-  bool containsProduct(String productId) {
-    return _items.any((item) => item.product.id == productId);
+  bool containsProduct(String productId, String category) {
+    return (_categoryItems[category] ?? []).any(
+      (item) => item.product.id == productId,
+    );
   }
 }
