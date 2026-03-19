@@ -88,7 +88,7 @@ class SavedAddressesPage extends StatelessWidget {
             address:
                 "Hilite Business Park, Ground Floor, Poovangal, Kozhikode, Kerala 673014",
             type: "HOME",
-            isDefault: true,
+            isSelected: true,
           ),
 
           _addressCard(
@@ -110,7 +110,7 @@ class SavedAddressesPage extends StatelessWidget {
     required String phone,
     required String address,
     required String type,
-    bool isDefault = false,
+    bool isSelected = false,
   }) {
     return Container(
       margin: EdgeInsets.only(bottom: Dimensions.height15),
@@ -150,10 +150,10 @@ class SavedAddressesPage extends StatelessWidget {
                 ),
               ),
 
-              if (isDefault) ...[
+              if (isSelected) ...[
                 SizedBox(width: Dimensions.width10),
                 const Text(
-                  "DEFAULT",
+                  "SELECTED",
                   style: TextStyle(
                     fontSize: 10,
                     color: Colors.green,
