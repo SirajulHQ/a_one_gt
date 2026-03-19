@@ -2,6 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/cart/models/cart_item.dart';
+import 'package:a_one_gt/features/checkout/view/checkout_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -289,14 +290,20 @@ class CartPage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                toastification.show(
-                  context: context,
-                  title: const Text('Checkout functionality coming soon!'),
-                  type: ToastificationType.success,
-                  style: ToastificationStyle.minimal,
-                  autoCloseDuration: const Duration(seconds: 2),
-                  alignment: Alignment.topCenter,
-                  borderRadius: BorderRadius.circular(10),
+                // toastification.show(
+                //   context: context,
+                //   title: const Text('Checkout functionality coming soon!'),
+                //   type: ToastificationType.success,
+                //   style: ToastificationStyle.minimal,
+                //   autoCloseDuration: const Duration(seconds: 2),
+                //   alignment: Alignment.topCenter,
+                //   borderRadius: BorderRadius.circular(10),
+                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CheckoutPage(category: category),
+                  ),
                 );
               },
               child: const Text(
