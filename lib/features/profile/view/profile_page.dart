@@ -1,6 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/saved_address_page.dart';
+import 'package:a_one_gt/features/my_orders/view/my_orders_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -230,7 +231,14 @@ class ProfilePage extends StatelessWidget {
                   buildOptionTile(
                     icon: Icons.shopping_bag_outlined,
                     title: "My Orders",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const MyOrdersPage(),
+                        ),
+                      );
+                    },
                   ),
 
                   buildOptionTile(

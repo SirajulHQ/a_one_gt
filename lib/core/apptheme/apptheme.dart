@@ -6,3 +6,19 @@ class Appcolors {
   static const Color texColor = Colors.black87;
   static const Color background = Color.fromARGB(255, 247, 247, 247);
 }
+
+/// ─── STATUS CONFIG MODEL ──────────────────────────────────────────────────
+
+class StatusConfig {
+  final Color color;
+  final Color bg;
+  final IconData icon;
+  final String label;
+
+  StatusConfig({
+    required this.color,
+    required this.bg,
+    required this.icon,
+    required this.label,
+  });
+}
