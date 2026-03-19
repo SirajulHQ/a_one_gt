@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -215,8 +216,15 @@ class ProfilePage extends StatelessWidget {
 
                   buildOptionTile(
                     icon: Icons.location_on_outlined,
-                    title: "Delivery Address",
-                    onTap: () {},
+                    title: "Saved Addresses",
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const SavedAddressesPage(),
+                        ),
+                      );
+                    },
                   ),
 
                   buildOptionTile(
