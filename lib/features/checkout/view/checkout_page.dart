@@ -1,14 +1,22 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
-class CheckoutPage extends StatelessWidget {
+class CheckoutPage extends StatefulWidget {
   final String category;
 
   const CheckoutPage({super.key, required this.category});
+
+  @override
+  State<CheckoutPage> createState() => _CheckoutPageState();
+}
+
+class _CheckoutPageState extends State<CheckoutPage> {
+  int selectedPayment = 0;
 
   double _subtotal(List items) {
     return items.fold(
@@ -28,7 +36,7 @@ class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartService = Provider.of<CartService>(context);
-    final items = cartService.itemsForCategory(category);
+    final items = cartService.itemsForCategory(widget.category);
 
     return Scaffold(
       backgroundColor: Appcolors.background,
@@ -67,6 +75,23 @@ class CheckoutPage extends StatelessWidget {
           children: [
             _sectionCard(
               title: "Delivery Address",
+              action: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const SavedAddressesPage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Change",
+                  style: TextStyle(
+                    color: Appcolors.primaryGreen,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
@@ -90,10 +115,10 @@ class CheckoutPage extends StatelessWidget {
                   _paymentTile(
                     Icons.credit_card_outlined,
                     "Credit / Debit Card",
-                    true,
+                    0,
                   ),
-                  _paymentTile(Icons.money_outlined, "Card on Delivery", false),
-                  _paymentTile(Icons.money_outlined, "Cash on Delivery", false),
+                  _paymentTile(Icons.money_outlined, "Card on Delivery", 1),
+                  _paymentTile(Icons.money_outlined, "Cash on Delivery", 2),
                 ],
               ),
             ),
@@ -119,8 +144,7 @@ class CheckoutPage extends StatelessWidget {
                           ),
                           Text(
                             "AED ${(item.product.price * item.quantity).toStringAsFixed(2)}",
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w600),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
@@ -163,8 +187,10 @@ class CheckoutPage extends StatelessWidget {
                     children: [
                       const Text(
                         "Total",
-                        style:
-                            TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         "AED ${_total(items).toStringAsFixed(2)}",
@@ -252,7 +278,11 @@ class CheckoutPage extends StatelessWidget {
   }
 
   /// SECTION CARD
-  Widget _sectionCard({required String title, required Widget child}) {
+  Widget _sectionCard({
+    required String title,
+    required Widget child,
+    Widget? action, // optional button
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -270,9 +300,19 @@ class CheckoutPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+          /// Title Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
+              if (action != null) action,
+            ],
           ),
           const SizedBox(height: 10),
           child,
@@ -282,13 +322,20 @@ class CheckoutPage extends StatelessWidget {
   }
 
   /// PAYMENT TILE
-  Widget _paymentTile(IconData icon, String title, bool selected) {
+  Widget _paymentTile(IconData icon, String title, int index) {
     return ListTile(
+      onTap: () {
+        setState(() {
+          selectedPayment = index;
+        });
+      },
       contentPadding: EdgeInsets.zero,
       leading: Icon(icon, color: Appcolors.primaryGreen),
       title: Text(title),
       trailing: Icon(
-        selected ? Icons.radio_button_checked : Icons.radio_button_off,
+        selectedPayment == index
+            ? Icons.radio_button_checked
+            : Icons.radio_button_off,
         color: Appcolors.primaryGreen,
       ),
     );
