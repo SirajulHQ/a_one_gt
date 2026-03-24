@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/widgets/custom_appbar.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,33 +12,7 @@ class HelpAndSupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolors.background,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "Help & Support",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
-            ),
-          ),
-        ),
-      ),
+      appBar: CustomAppbar(title: "Help & support"),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -184,4 +159,3 @@ class HelpAndSupportPage extends StatelessWidget {
     );
   }
 }
-

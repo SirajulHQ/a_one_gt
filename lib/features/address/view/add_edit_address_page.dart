@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
@@ -54,28 +55,8 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
       backgroundColor: Appcolors.background,
 
       /// APPBAR
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          widget.isEdit ? "Edit Address" : "Add Address",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-            gradient: LinearGradient(
-              colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
-            ),
-          ),
-        ),
+      appBar: CustomAppbar(
+        title: widget.isEdit ? "Edit Address" : "Add Address",
       ),
 
       /// BODY

@@ -2,6 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/add_edit_address_page.dart';
 import 'package:a_one_gt/features/address/widgets/action_outlined_button_widget.dart';
+import 'package:a_one_gt/features/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
@@ -15,29 +16,7 @@ class SavedAddressesPage extends StatelessWidget {
       backgroundColor: Appcolors.background,
 
       /// APPBAR
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "Saved Addresses",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-        ),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-Appcolors.gradientColor1, Appcolors.gradientColor2              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: CustomAppbar(title: "Saved Address"),
 
       /// BODY
       body: ListView(

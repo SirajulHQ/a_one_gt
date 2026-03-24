@@ -1,6 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
+import 'package:a_one_gt/features/widgets/custom_appbar.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,33 +83,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
 
     return Scaffold(
       backgroundColor: Appcolors.background,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "Product Details",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-Appcolors.gradientColor1, Appcolors.gradientColor2              ],
-            ),
-          ),
-        ),
+      appBar: CustomAppbar(
+        title: "Product Details",
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),

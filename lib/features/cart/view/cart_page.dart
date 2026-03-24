@@ -3,6 +3,7 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/cart/models/cart_item.dart';
 import 'package:a_one_gt/features/checkout/view/checkout_page.dart';
+import 'package:a_one_gt/features/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -18,32 +19,7 @@ class CartPage extends StatelessWidget {
       backgroundColor: Appcolors.background,
 
       /// APPBAR
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "$category Cart",
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-Appcolors.gradientColor1, Appcolors.gradientColor2              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: CustomAppbar(title: "$category Cart"),
 
       /// BODY
       body: Consumer<CartService>(
