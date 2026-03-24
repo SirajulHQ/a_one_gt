@@ -10,6 +10,21 @@ class CheckoutPage extends StatelessWidget {
 
   const CheckoutPage({super.key, required this.category});
 
+  double _subtotal(List items) {
+    return items.fold(
+      0,
+      (sum, item) => sum + (item.product.price * item.quantity),
+    );
+  }
+
+  double _vat(List items) {
+    return _subtotal(items) * 0.05;
+  }
+
+  double _total(List items) {
+    return _subtotal(items) + _vat(items);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartService = Provider.of<CartService>(context);
@@ -72,9 +87,13 @@ class CheckoutPage extends StatelessWidget {
               title: "Payment Method",
               child: Column(
                 children: [
-                  _paymentTile(Icons.credit_card, "Credit / Debit Card", true),
-                  _paymentTile(Icons.account_balance_wallet, "Wallet", false),
-                  _paymentTile(Icons.money, "Cash on Delivery", false),
+                  _paymentTile(
+                    Icons.credit_card_outlined,
+                    "Credit / Debit Card",
+                    true,
+                  ),
+                  _paymentTile(Icons.money_outlined, "Card on Delivery", false),
+                  _paymentTile(Icons.money_outlined, "Cash on Delivery", false),
                 ],
               ),
             ),
@@ -84,26 +103,79 @@ class CheckoutPage extends StatelessWidget {
             _sectionCard(
               title: "Order Summary",
               child: Column(
-                children: items.map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "${item.product.name} x${item.quantity}",
-                            style: const TextStyle(fontSize: 13),
+                children: [
+                  /// Item List
+                  ...items.map((item) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "${item.product.name} x${item.quantity}",
+                              style: const TextStyle(fontSize: 13),
+                            ),
                           ),
+                          Text(
+                            "AED ${(item.product.price * item.quantity).toStringAsFixed(2)}",
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+
+                  const Divider(height: 24),
+
+                  /// Subtotal
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Subtotal"),
+                      Text(
+                        "AED ${_subtotal(items).toStringAsFixed(2)}",
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  /// VAT
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("VAT (5%)"),
+                      Text(
+                        "AED ${_vat(items).toStringAsFixed(2)}",
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+
+                  const Divider(height: 24),
+
+                  /// Total
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Total",
+                        style:
+                            TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "AED ${_total(items).toStringAsFixed(2)}",
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text(
-                          "AED ${(item.product.price * item.quantity).toStringAsFixed(2)}",
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
 
@@ -134,7 +206,7 @@ class CheckoutPage extends StatelessWidget {
                 children: [
                   const Text("Total", style: TextStyle(color: Colors.grey)),
                   Text(
-                    "AED ${cartService.totalPriceForCategory(category).toStringAsFixed(2)}",
+                    "AED ${_total(items).toStringAsFixed(2)}",
                     style: TextStyle(
                       fontSize: Dimensions.font20,
                       fontWeight: FontWeight.bold,
