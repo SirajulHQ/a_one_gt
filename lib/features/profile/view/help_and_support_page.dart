@@ -1,6 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
-import 'package:a_one_gt/features/widgets/custom_appbar.dart';
+import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,7 @@ class HelpAndSupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolors.background,
-      appBar: CustomAppbar(title: "Help & support"),
+      appBar: CustomAppBar(title: "Help & support"),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(

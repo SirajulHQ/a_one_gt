@@ -3,7 +3,7 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/cart/models/cart_item.dart';
 import 'package:a_one_gt/features/checkout/view/checkout_page.dart';
-import 'package:a_one_gt/features/widgets/custom_appbar.dart';
+import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class CartPage extends StatelessWidget {
       backgroundColor: Appcolors.background,
 
       /// APPBAR
-      appBar: CustomAppbar(title: "$category Cart"),
+      appBar: CustomAppBar(title: "$category Cart"),
 
       /// BODY
       body: Consumer<CartService>(

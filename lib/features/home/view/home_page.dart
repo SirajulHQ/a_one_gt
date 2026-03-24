@@ -2,6 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
 import 'package:a_one_gt/features/product/view/product_home_page.dart';
+import 'package:a_one_gt/features/widgets/custom_sliver_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -67,86 +68,9 @@ class _HomePageState extends State<HomePage> {
         physics: const ClampingScrollPhysics(),
         slivers: [
           /// APP BAR
-          SliverAppBar(
-            expandedHeight: 140,
-            pinned: true,
-            elevation: 0,
-            backgroundColor: Appcolors.darkGreen,
-            iconTheme: const IconThemeData(color: Colors.white),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
-            ),
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(32),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
-                ),
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: -20,
-                    right: -20,
-                    child: Container(
-                      width: Dimensions.width30 * 8.5,
-                      height: Dimensions.height45 * 2.5,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.08),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    bottom: 10,
-                    right: 60,
-                    child: Container(
-                      width: Dimensions.width30 * 4,
-                      height: Dimensions.height45 * 1.3,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.06),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: 20,
-                    bottom: 24,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          widget.category,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-
-                        const SizedBox(height: 2),
-
-                        Text(
-                          "${displayedSubCategories.length} subcategories",
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.75),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          CustomSliverAppBar(
+            title: widget.category,
+            subtitle: "${displayedSubCategories.length} subcategories",
           ),
 
           /// SEARCH

@@ -1,6 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
-import 'package:a_one_gt/features/widgets/custom_appbar.dart';
+import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,7 +21,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolors.background,
-      appBar: CustomAppbar(title: "Edit Profile"),
+      appBar: CustomAppBar(title: "Edit Profile"),
       body: SingleChildScrollView(
         child: Column(
           children: [

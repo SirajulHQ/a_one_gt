@@ -1,7 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/my_orders/widgets/order_card_widget.dart';
-import 'package:a_one_gt/features/widgets/custom_appbar.dart';
+import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -119,7 +119,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(title: "My orders"),
+      appBar: CustomAppBar(title: "My orders"),
       backgroundColor: Appcolors.background,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),

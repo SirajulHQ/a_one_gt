@@ -2,7 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
-import 'package:a_one_gt/features/widgets/custom_appbar.dart';
+import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
@@ -43,7 +43,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       backgroundColor: Appcolors.background,
 
       /// APPBAR
-      appBar: CustomAppbar(title: "Checkout"),
+      appBar: CustomAppBar(title: "Checkout"),
 
       /// BODY
       body: SingleChildScrollView(

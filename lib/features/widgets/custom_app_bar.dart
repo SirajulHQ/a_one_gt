@@ -2,12 +2,12 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 
-class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool centerTitle;
   final List<Widget>? actions;
 
-  const CustomAppbar({
+  const CustomAppBar({
     super.key,
     required this.title,
     this.centerTitle = true,

@@ -1,9 +1,9 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
-import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/home/widgets/product_card_widget.dart';
 import 'package:a_one_gt/features/product/view/product_details_screen.dart';
+import 'package:a_one_gt/features/widgets/custom_sliver_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -80,106 +80,24 @@ class _ProductHomePageState extends State<ProductHomePage> {
         physics: const ClampingScrollPhysics(),
         slivers: [
           /// ── App Bar ─────────────────────────────────
-          SliverAppBar(
-            expandedHeight: 140,
-            pinned: true,
-            elevation: 0,
-            backgroundColor: Appcolors.darkGreen,
-            iconTheme: const IconThemeData(color: Colors.white),
-
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
-            ),
-
-            flexibleSpace: Container(
+          CustomSliverAppBar(
+            title: widget.subCategory,
+            subtitle: "${displayedProducts.length} products available",
+            action: Container(
+              margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(32),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
-                ),
+                color: Colors.white.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(12),
               ),
-
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: -20,
-                    right: -20,
-                    child: Container(
-                      width: Dimensions.width30 * 8.5,
-                      height: Dimensions.height45 * 2.5,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.08),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    bottom: 10,
-                    right: 60,
-                    child: Container(
-                      width: Dimensions.width30 * 4,
-                      height: Dimensions.height45 * 1.3,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.06),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: 20,
-                    bottom: 24,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.subCategory,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-
-                        const SizedBox(height: 2),
-
-                        Text(
-                          "${displayedProducts.length} products available",
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.75),
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              child: IconButton(
+                icon: const Icon(
+                  Icons.notifications_none,
+                  color: Colors.white,
+                  size: 22,
+                ),
+                onPressed: () {},
               ),
             ),
-
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.notifications_none,
-                    color: Colors.white,
-                    size: 22,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
           ),
 
           /// ── Search ─────────────────────────────────
