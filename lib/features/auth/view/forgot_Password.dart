@@ -9,7 +9,7 @@ class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF5F5F5),
+      backgroundColor: Appcolors.background,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 * 1.8),

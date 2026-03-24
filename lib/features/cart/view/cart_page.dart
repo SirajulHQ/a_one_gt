@@ -39,9 +39,7 @@ class CartPage extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color.fromARGB(255, 103, 203, 147),
-                const Color.fromARGB(255, 10, 72, 36).withValues(alpha: 0.78),
-              ],
+Appcolors.gradientColor1, Appcolors.gradientColor2              ],
             ),
           ),
         ),
@@ -283,7 +281,7 @@ class CartPage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 13, 85, 43),
+                backgroundColor: Appcolors.darkGreen,
                 padding: EdgeInsets.symmetric(vertical: Dimensions.height15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),

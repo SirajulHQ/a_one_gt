@@ -81,7 +81,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     final product = widget.product;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7FB),
+      backgroundColor: Appcolors.background,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -105,9 +105,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color.fromARGB(255, 103, 203, 147),
-                const Color.fromARGB(255, 10, 72, 36).withOpacity(0.78),
-              ],
+Appcolors.gradientColor1, Appcolors.gradientColor2              ],
             ),
           ),
         ),

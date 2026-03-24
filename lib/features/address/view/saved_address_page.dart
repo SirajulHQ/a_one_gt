@@ -12,7 +12,7 @@ class SavedAddressesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F3F6),
+      backgroundColor: Appcolors.background,
 
       /// APPBAR
       appBar: AppBar(
@@ -33,9 +33,7 @@ class SavedAddressesPage extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color.fromARGB(255, 103, 203, 147),
-                const Color.fromARGB(255, 10, 72, 36).withValues(alpha: 0.78),
-              ],
+Appcolors.gradientColor1, Appcolors.gradientColor2              ],
             ),
           ),
         ),

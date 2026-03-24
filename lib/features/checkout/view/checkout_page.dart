@@ -59,10 +59,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                const Color.fromARGB(255, 103, 203, 147),
-                const Color.fromARGB(255, 10, 72, 36).withValues(alpha: 0.78),
-              ],
+              colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
             ),
           ),
         ),
@@ -247,7 +244,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 13, 85, 43),
+                  backgroundColor: Appcolors.darkGreen,
                   padding: EdgeInsets.symmetric(vertical: Dimensions.height15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),

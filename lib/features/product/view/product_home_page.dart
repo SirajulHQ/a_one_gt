@@ -74,7 +74,7 @@ class _ProductHomePageState extends State<ProductHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7FB),
+      backgroundColor: Appcolors.background,
 
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
@@ -84,7 +84,7 @@ class _ProductHomePageState extends State<ProductHomePage> {
             expandedHeight: 140,
             pinned: true,
             elevation: 0,
-            backgroundColor: Color.fromARGB(255, 10, 72, 36).withOpacity(0.78),
+            backgroundColor: Appcolors.darkGreen,
             iconTheme: const IconThemeData(color: Colors.white),
 
             shape: const RoundedRectangleBorder(
@@ -99,10 +99,7 @@ class _ProductHomePageState extends State<ProductHomePage> {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    const Color.fromARGB(255, 103, 203, 147),
-                    const Color.fromARGB(255, 10, 72, 36).withOpacity(0.78),
-                  ],
+                  colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
                 ),
               ),
 

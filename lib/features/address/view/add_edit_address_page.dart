@@ -51,7 +51,7 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F3F6),
+      backgroundColor: Appcolors.background,
 
       /// APPBAR
       appBar: AppBar(
@@ -72,10 +72,7 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
               bottom: Radius.circular(30),
             ),
             gradient: LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 103, 203, 147),
-                const Color.fromARGB(255, 10, 72, 36).withValues(alpha: 0.78),
-              ],
+              colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
             ),
           ),
         ),

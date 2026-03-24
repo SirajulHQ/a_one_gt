@@ -119,13 +119,12 @@ class _MyOrdersPageState extends State<MyOrdersPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         centerTitle: true,
         title: const Text(
           "My Orders",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Appcolors.background,
         iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -135,15 +134,12 @@ class _MyOrdersPageState extends State<MyOrdersPage>
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                const Color.fromARGB(255, 103, 203, 147),
-                const Color.fromARGB(255, 10, 72, 36).withValues(alpha: 0.78),
-              ],
+              colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
             ),
           ),
         ),
       ),
-      backgroundColor: const Color(0xFFF0F4F8),
+      backgroundColor: Appcolors.background,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [

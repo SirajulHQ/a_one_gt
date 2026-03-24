@@ -2,80 +2,23 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/my_orders/view/my_orders_page.dart';
+import 'package:a_one_gt/features/profile/view/edit_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  Widget buildOptionTile({
-    required IconData icon,
-    required String title,
-    VoidCallback? onTap,
-  }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: Dimensions.height10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(Dimensions.radius15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: Dimensions.radius15,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ListTile(
-        leading: Container(
-          height: Dimensions.height30,
-          width: Dimensions.height30,
-          decoration: BoxDecoration(
-            color: Appcolors.primaryGreen.withOpacity(.1),
-            borderRadius: BorderRadius.circular(Dimensions.radius15),
-          ),
-          child: Icon(
-            icon,
-            color: Appcolors.primaryGreen,
-            size: Dimensions.iconSize24,
-          ),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: Dimensions.font16,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios_rounded,
-          size: Dimensions.iconSize16,
-        ),
-        onTap: () {
-          HapticFeedback.selectionClick();
-          onTap?.call();
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7FB),
+      backgroundColor: Appcolors.background,
       body: CustomScrollView(
         slivers: [
           /// ───────────────── Header ─────────────────
           SliverAppBar(
             expandedHeight: Dimensions.height45 * 5,
-            pinned: true,
-            elevation: 0,
-            backgroundColor: const Color.fromARGB(
-              255,
-              10,
-              72,
-              36,
-            ).withOpacity(0.78),
+            backgroundColor: Appcolors.darkGreen,
             iconTheme: const IconThemeData(color: Colors.white),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -90,10 +33,7 @@ class ProfilePage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    const Color.fromARGB(255, 103, 203, 147),
-                    const Color.fromARGB(255, 10, 72, 36).withOpacity(0.78),
-                  ],
+                  colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
                 ),
               ),
               child: Stack(
@@ -142,30 +82,35 @@ class ProfilePage extends StatelessWidget {
                           color: Colors.white.withOpacity(0.2),
                         ),
                         child: ClipOval(
-                          child: Image.network(
-                            "https://i.pravatar.cc/150?img=68",
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(
-                                Icons.person,
-                                size: Dimensions.height45,
-                                color: Colors.white,
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  value:
-                                      loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
+                          child: Icon(
+                            Icons.person_outline_outlined,
+                            size: Dimensions.iconSize24 * 2.5,
+                            color: Appcolors.darkGreen,
                           ),
+                          // child: Image.network(
+                          //   "https://i.pravatar.cc/150?img=68",
+                          //   fit: BoxFit.cover,
+                          //   errorBuilder: (context, error, stackTrace) {
+                          //     return Icon(
+                          //       Icons.person,
+                          //       size: Dimensions.height45,
+                          //       color: Colors.white,
+                          //     );
+                          //   },
+                          //   loadingBuilder: (context, child, loadingProgress) {
+                          //     if (loadingProgress == null) return child;
+                          //     return Center(
+                          //       child: CircularProgressIndicator(
+                          //         color: Colors.white,
+                          //         value:
+                          //             loadingProgress.expectedTotalBytes != null
+                          //             ? loadingProgress.cumulativeBytesLoaded /
+                          //                   loadingProgress.expectedTotalBytes!
+                          //             : null,
+                          //       ),
+                          //     );
+                          //   },
+                          // ),
                         ),
                       ),
 
@@ -212,7 +157,14 @@ class ProfilePage extends StatelessWidget {
                   buildOptionTile(
                     icon: Icons.person_outline,
                     title: "Edit Profile",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const EditProfilePage(),
+                        ),
+                      );
+                    },
                   ),
 
                   buildOptionTile(
@@ -234,9 +186,7 @@ class ProfilePage extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const MyOrdersPage(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const MyOrdersPage()),
                       );
                     },
                   ),
@@ -290,6 +240,57 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildOptionTile({
+    required IconData icon,
+    required String title,
+    VoidCallback? onTap,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(bottom: Dimensions.height10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(Dimensions.radius15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: Dimensions.radius15,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ListTile(
+        leading: Container(
+          height: Dimensions.height30,
+          width: Dimensions.height30,
+          decoration: BoxDecoration(
+            color: Appcolors.primaryGreen.withOpacity(.1),
+            borderRadius: BorderRadius.circular(Dimensions.radius15),
+          ),
+          child: Icon(
+            icon,
+            color: Appcolors.primaryGreen,
+            size: Dimensions.iconSize24,
+          ),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: Dimensions.font16,
+          ),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: Dimensions.iconSize16,
+        ),
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap?.call();
+        },
       ),
     );
   }
