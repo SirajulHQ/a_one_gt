@@ -1,7 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
-import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
+import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -384,31 +384,6 @@ Appcolors.gradientColor1, Appcolors.gradientColor2              ],
           ),
         ],
       ),
-    );
-  }
-}
-
-class SectionTitle extends StatelessWidget {
-  final String title;
-  const SectionTitle({super.key, required this.title});
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: Dimensions.width10,
-          height: 18,
-          decoration: BoxDecoration(
-            color: Appcolors.primaryGreen,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        SizedBox(width: Dimensions.width20),
-        Text(
-          title,
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-        ),
-      ],
     );
   }
 }
