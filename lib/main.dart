@@ -1,9 +1,9 @@
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/category/view/categories_page.dart';
 import 'package:a_one_gt/features/auth/view/create_accout_page.dart';
-import 'package:a_one_gt/features/auth/view/email_Signin_Page.dart';
+import 'package:a_one_gt/features/auth/view/login_page.dart';
 import 'package:a_one_gt/features/auth/view/forgot_Password.dart';
-import 'package:a_one_gt/features/auth/view/password_Signin_Page.dart';
+import 'package:a_one_gt/features/auth/view/password_Page.dart';
 import 'package:a_one_gt/features/auth/view/splash_screen.dart';
 import 'package:a_one_gt/features/home/view/home_page.dart';
 import 'package:a_one_gt/features/main_navigation/view/main_navigation_page.dart';
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Poppins'),
 
       routes: {
-        '/email': (context) => const EmailSigninPage(),
-        '/password': (context) => const PasswordSigninPage(),
+        '/email': (context) => const LoginPage(),
+        '/password': (context) => const PasswordPage(),
         '/forgot_password': (context) => const ForgotPasswordPage(),
         '/create_account': (context) => const CreateAccountPage(),
         '/categories': (context) => const CategoriesPage(),

@@ -3,8 +3,8 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class PasswordSigninPage extends StatelessWidget {
-  const PasswordSigninPage({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,32 +12,14 @@ class PasswordSigninPage extends StatelessWidget {
       backgroundColor: Appcolors.background,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 * 1.8),
+          padding: EdgeInsets.symmetric(
+            vertical: Dimensions.height30 * 3,
+            horizontal: Dimensions.width20 * 1.8,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: Dimensions.height20),
-
-              /// Back Button
-              Container(
-                height: Dimensions.height45,
-                width: Dimensions.height45,
-                decoration: BoxDecoration(
-                  color: const Color(0xffEDEDED),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-
-              SizedBox(height: Dimensions.height45),
-
-              /// Title
+              SizedBox(height: Dimensions.height15),
               Text(
                 "Sign in",
                 style: TextStyle(
@@ -49,23 +31,16 @@ class PasswordSigninPage extends StatelessWidget {
 
               SizedBox(height: Dimensions.height45),
 
-              /// Password Field
               Container(
-                height: Dimensions.height45 + 3,
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
                 decoration: BoxDecoration(
-                  color: const Color(0xffF2F2F2),
+                  color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: TextField(
-                  obscureText: true,
+                child: const TextField(
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Password",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: Dimensions.font16 - 1,
-                    ),
+                    hintText: "Email Address",
                   ),
                 ),
               ),
@@ -85,46 +60,76 @@ class PasswordSigninPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     HapticFeedback.lightImpact();
-                    Navigator.pushNamed(context, '/categories');
+                    Navigator.pushNamed(context, '/password');
                   },
                   child: const Text(
                     "Continue",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: Dimensions.height10),
 
-              /// Forgot Password
+              /// Create account
               InkWell(
                 onTap: () {
                   HapticFeedback.lightImpact();
-                  Navigator.pushNamed(context, '/forgot_password');
+                  Navigator.pushNamed(context, '/create_account');
                 },
                 child: Row(
-                  children: const [
+                  children: [
                     Text(
-                      "Forgot Password ? ",
-                      style: TextStyle(fontSize: 15, color: Colors.black87),
+                      "Dont have an Account ? ",
+                      style: TextStyle(fontSize: Dimensions.font16 - 2),
                     ),
                     Text(
-                      "Reset",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      "Create One",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
+
+              SizedBox(height: Dimensions.height45),
+              socialButton(icon: Icons.apple, text: "Continue With Apple"),
+              SizedBox(height: Dimensions.height15),
+              socialButton(
+                icon: Icons.g_mobiledata,
+                text: "Continue With Google",
+              ),
+              SizedBox(height: Dimensions.height15),
+              socialButton(
+                icon: Icons.facebook,
+                text: "Continue With Facebook",
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget socialButton({required IconData icon, required String text}) {
+    return Container(
+      height: Dimensions.height45 + 7,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: Dimensions.iconSize24),
+          SizedBox(width: Dimensions.width10 + 4),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: Dimensions.font16 - 1.5,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }

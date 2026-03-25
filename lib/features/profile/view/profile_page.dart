@@ -4,6 +4,7 @@ import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/my_orders/view/my_orders_page.dart';
 import 'package:a_one_gt/features/profile/view/edit_profile_page.dart';
 import 'package:a_one_gt/features/profile/view/help_and_support_page.dart';
+import 'package:a_one_gt/features/widgets/logout_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,7 +41,6 @@ class ProfilePage extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  /// background circles
                   Positioned(
                     top: -20,
                     right: -20,
@@ -67,7 +67,6 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
 
-                  /// Profile Content
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -116,8 +115,6 @@ class ProfilePage extends StatelessWidget {
                       ),
 
                       SizedBox(height: Dimensions.height10),
-
-                      /// Name
                       Text(
                         "Sirajul Haque",
                         style: TextStyle(
@@ -126,10 +123,7 @@ class ProfilePage extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-
                       SizedBox(height: Dimensions.height10 / 2),
-
-                      /// Email
                       Text(
                         "sirajul@gmail.com",
                         style: TextStyle(
@@ -219,7 +213,7 @@ class ProfilePage extends StatelessWidget {
 
                   SizedBox(height: Dimensions.height20),
 
-                  /// Logout Button
+                  /// ───────────────── Logout Button ─────────────────
                   Container(
                     width: double.infinity,
                     height: Dimensions.height45,
@@ -230,6 +224,15 @@ class ProfilePage extends StatelessWidget {
                     child: TextButton.icon(
                       onPressed: () {
                         HapticFeedback.mediumImpact();
+
+                        /// ───────────────── Logout Dialog ─────────────────
+                        showDialog(
+                          context: context,
+                          barrierColor: Colors.black.withOpacity(0.5),
+                          builder: (context) {
+                            return const LogoutDialogWidget();
+                          },
+                        );
                       },
                       icon: const Icon(Icons.logout, color: Colors.red),
                       label: const Text(
