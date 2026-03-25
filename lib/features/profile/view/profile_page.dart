@@ -4,7 +4,8 @@ import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/my_orders/view/my_orders_page.dart';
 import 'package:a_one_gt/features/profile/view/edit_profile_page.dart';
 import 'package:a_one_gt/features/profile/view/help_and_support_page.dart';
-import 'package:a_one_gt/features/widgets/logout_dialog_widget.dart';
+import 'package:a_one_gt/features/settings/view/settings_page.dart';
+import 'package:a_one_gt/features/profile/widget/logout_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -195,7 +196,12 @@ class ProfilePage extends StatelessWidget {
                   buildOptionTile(
                     icon: Icons.settings_outlined,
                     title: "Settings",
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SettingsPage()),
+                      );
+                    },
                   ),
 
                   buildOptionTile(
