@@ -1,4 +1,5 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/features/settings/view/about_legal_page.dart';
 import 'package:a_one_gt/features/settings/widgets/confirmation_dialog_widget.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
@@ -14,7 +15,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool notifications = true;
-  bool locationService = true;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildArrowTile(
                   icon: Icons.dashboard_customize_outlined,
                   title: "About & Legal",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AboutLegalPage()),
+                    );
+                  },
                 ),
                 _buildArrowTile(
                   icon: Icons.stop_circle_outlined,
