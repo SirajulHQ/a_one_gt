@@ -2,6 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/auth/view/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LogoutDialogWidget extends StatelessWidget {
   const LogoutDialogWidget({super.key});
@@ -10,15 +11,11 @@ class LogoutDialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(
-        horizontal: Dimensions.width20,
-      ),
+      insetPadding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(
-            Dimensions.radius20 + 4,
-          ),
+          borderRadius: BorderRadius.circular(Dimensions.radius20 + 4),
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -35,10 +32,7 @@ class LogoutDialogWidget extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    Appcolors.gradientColor1,
-                    Appcolors.gradientColor2,
-                  ],
+                  colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
                 ),
               ),
               child: Column(
@@ -97,12 +91,8 @@ class LogoutDialogWidget extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: Appcolors.background,
-                      borderRadius: BorderRadius.circular(
-                        Dimensions.radius15,
-                      ),
-                      border: Border.all(
-                        color: Colors.grey.shade200,
-                      ),
+                      borderRadius: BorderRadius.circular(Dimensions.radius15),
+                      border: Border.all(color: Colors.grey.shade200),
                     ),
                     child: Row(
                       children: [
@@ -161,6 +151,7 @@ class LogoutDialogWidget extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
+                        HapticFeedback.mediumImpact();
                         Navigator.pop(context);
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -190,16 +181,17 @@ class LogoutDialogWidget extends StatelessWidget {
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black87,
-                        side: BorderSide(
-                          color: Colors.grey.shade300,
-                        ),
+                        side: BorderSide(color: Colors.grey.shade300),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                             Dimensions.radius15,
                           ),
                         ),
                       ),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
                       child: const Text(
                         "Cancel",
                         style: TextStyle(

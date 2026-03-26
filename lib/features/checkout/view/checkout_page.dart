@@ -4,6 +4,7 @@ import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
@@ -54,6 +55,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               title: "Delivery Address",
               action: GestureDetector(
                 onTap: () {
+                  HapticFeedback.lightImpact();
                   Navigator.push(
                     context,
                     MaterialPageRoute(

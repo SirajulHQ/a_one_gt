@@ -7,6 +7,7 @@ import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:a_one_gt/features/widgets/like_button_widget.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider;
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
@@ -40,6 +41,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   void _openFullScreen(int initialIndex) {
+    HapticFeedback.lightImpact();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => FullScreenGalleryScreen(

@@ -264,15 +264,7 @@ class CartPage extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // toastification.show(
-                //   context: context,
-                //   title: const Text('Checkout functionality coming soon!'),
-                //   type: ToastificationType.success,
-                //   style: ToastificationStyle.minimal,
-                //   autoCloseDuration: const Duration(seconds: 2),
-                //   alignment: Alignment.topCenter,
-                //   borderRadius: BorderRadius.circular(10),
-                // );
+                HapticFeedback.lightImpact();
                 Navigator.push(
                   context,
                   MaterialPageRoute(

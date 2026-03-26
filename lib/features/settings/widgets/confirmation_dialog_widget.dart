@@ -2,6 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/settings/widgets/otp_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ConfirmationDialogWidget extends StatelessWidget {
   final bool isDelete;
@@ -98,6 +99,7 @@ class ConfirmationDialogWidget extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         Navigator.pop(context);
                         showDialog(
                           context: context,
@@ -118,7 +120,10 @@ class ConfirmationDialogWidget extends StatelessWidget {
                     width: double.infinity,
                     height: Dimensions.height45,
                     child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
                       child: const Text("Cancel"),
                     ),
                   ),

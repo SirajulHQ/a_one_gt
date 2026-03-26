@@ -49,6 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: Icons.dashboard_customize_outlined,
                   title: "About & Legal",
                   onTap: () {
+                    HapticFeedback.lightImpact();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const AboutLegalPage()),

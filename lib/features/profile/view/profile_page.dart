@@ -154,6 +154,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.person_outline,
                     title: "Edit Profile",
                     onTap: () {
+                      HapticFeedback.mediumImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -167,6 +168,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.location_on_outlined,
                     title: "Saved Addresses",
                     onTap: () {
+                      HapticFeedback.mediumImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -180,6 +182,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.shopping_bag_outlined,
                     title: "My Orders",
                     onTap: () {
+                      HapticFeedback.mediumImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => const MyOrdersPage()),
@@ -191,6 +194,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.settings_outlined,
                     title: "Settings",
                     onTap: () {
+                      HapticFeedback.mediumImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => const SettingsPage()),
@@ -202,6 +206,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.help_outline,
                     title: "Help & Support",
                     onTap: () {
+                      HapticFeedback.mediumImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -1,6 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class OtpDialogWidget extends StatefulWidget {
   final bool isDelete;
@@ -105,7 +106,7 @@ class _OtpDialogWidgetState extends State<OtpDialogWidget> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  HapticFeedback.lightImpact();
                   Navigator.pop(context);
                 },
                 child: Text(

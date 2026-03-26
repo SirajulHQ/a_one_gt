@@ -182,6 +182,7 @@ class SavedAddressesPage extends StatelessWidget {
                 icon: Icons.edit,
                 color: Appcolors.primaryGreen,
                 onPressed: () {
+                  HapticFeedback.lightImpact();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
