@@ -6,6 +6,7 @@ class FloatingNavBar extends StatelessWidget {
   final ValueChanged<int> onTap;
   final List<NavItemModel> items;
   final int cartCount;
+  final int wishlistCount;
   final Color primaryGreen;
   final Color darkGreen;
 
@@ -15,6 +16,7 @@ class FloatingNavBar extends StatelessWidget {
     required this.onTap,
     required this.items,
     required this.cartCount,
+    required this.wishlistCount,
     required this.primaryGreen,
     required this.darkGreen,
   });
@@ -50,7 +52,10 @@ class FloatingNavBar extends StatelessWidget {
           child: Row(
             children: List.generate(items.length, (index) {
               final isSelected = selectedIndex == index;
-              final showBadge = index == 1 && cartCount > 0;
+              final showBadge =
+                  (index == 1 && cartCount > 0) ||
+                  (index == 2 && wishlistCount > 0);
+              final badgeCount = index == 1 ? cartCount : wishlistCount;
 
               return Expanded(
                 child: GestureDetector(
@@ -59,8 +64,10 @@ class FloatingNavBar extends StatelessWidget {
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 280),
                     curve: Curves.easeOutCubic,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: isSelected
                           ? Colors.white.withOpacity(0.15)
@@ -77,9 +84,9 @@ class FloatingNavBar extends StatelessWidget {
                               duration: const Duration(milliseconds: 200),
                               transitionBuilder: (child, animation) =>
                                   ScaleTransition(
-                                scale: animation,
-                                child: child,
-                              ),
+                                    scale: animation,
+                                    child: child,
+                                  ),
                               child: Icon(
                                 isSelected
                                     ? items[index].icon
@@ -123,7 +130,7 @@ class FloatingNavBar extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
-                                cartCount > 99 ? '99+' : '$cartCount',
+                                badgeCount > 99 ? '99+' : '$badgeCount',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 9,

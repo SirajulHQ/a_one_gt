@@ -188,12 +188,6 @@ class ProfilePage extends StatelessWidget {
                   ),
 
                   buildOptionTile(
-                    icon: Icons.favorite_border,
-                    title: "Wishlist",
-                    onTap: () {},
-                  ),
-
-                  buildOptionTile(
                     icon: Icons.settings_outlined,
                     title: "Settings",
                     onTap: () {

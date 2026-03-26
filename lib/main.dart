@@ -9,13 +9,17 @@ import 'package:a_one_gt/features/home/view/home_page.dart';
 import 'package:a_one_gt/features/main_navigation/view/main_navigation_page.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    hide ChangeNotifierProvider;
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => CartService(),
-      child: const MyApp(),
+    ProviderScope(
+      child: ChangeNotifierProvider(
+        create: (context) => CartService(),
+        child: const MyApp(),
+      ),
     ),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
-import 'package:a_one_gt/features/home/widgets/product_card_widget.dart';
+import 'package:a_one_gt/features/product/widgets/product_card_widget.dart';
 import 'package:a_one_gt/features/product/view/product_details_screen.dart';
 import 'package:a_one_gt/features/widgets/custom_sliver_app_bar.dart';
 import 'package:flutter/material.dart';

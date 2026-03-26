@@ -3,24 +3,26 @@ import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
+import 'package:a_one_gt/features/wishlist/controller/wishlist_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider;
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
   final Product product;
 
   const ProductDetailScreen({super.key, required this.product});
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  ConsumerState<ProductDetailScreen> createState() =>
+      _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen>
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen>
     with SingleTickerProviderStateMixin {
   int quantity = 1;
-  bool isLiked = false;
 
   late AnimationController _likeController;
   late Animation<double> _scaleAnimation;
@@ -61,18 +63,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   }
 
   void _handleLikeTap() {
-    setState(() {
-      isLiked = !isLiked;
-    });
+    final notifier = ref.read(wishlistProvider.notifier);
+    notifier.toggle(widget.product);
 
-    if (isLiked) {
-      // 1. Trigger "Medium" impact haptic (simulates a physical click)
+    final isNowLiked = ref
+        .read(wishlistProvider)
+        .any((p) => p.id == widget.product.id);
+
+    if (isNowLiked) {
       HapticFeedback.mediumImpact();
-
-      // 2. Run the "Pop" animation
       _likeController.forward(from: 0.0);
     } else {
-      // Light feedback for unliking
       HapticFeedback.lightImpact();
     }
   }
@@ -80,6 +81,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
+    final isLiked = ref.watch(
+      wishlistProvider.select((list) => list.any((p) => p.id == product.id)),
+    );
 
     return Scaffold(
       backgroundColor: Appcolors.background,
