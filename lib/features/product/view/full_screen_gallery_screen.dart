@@ -7,6 +7,7 @@ class FullScreenGalleryScreen extends StatefulWidget {
   final int initialIndex;
 
   const FullScreenGalleryScreen({
+    super.key,
     required this.images,
     required this.initialIndex,
   });
@@ -28,7 +29,9 @@ class _FullScreenGalleryScreenState extends State<FullScreenGalleryScreen> {
   void initState() {
     super.initState();
     _current = widget.initialIndex;
-    _controller = PageController(initialPage: widget.initialIndex);
+    _controller = PageController(
+      initialPage: widget.initialIndex + (widget.images.length * 1000),
+    );
   }
 
   @override
@@ -56,14 +59,15 @@ class _FullScreenGalleryScreenState extends State<FullScreenGalleryScreen> {
       appBar: CustomAppBar(title: '${_current + 1} / ${widget.images.length}'),
       body: PageView.builder(
         controller: _controller,
-        itemCount: widget.images.length,
+        itemCount: null,
         onPageChanged: (index) {
           setState(() {
-            _current = index;
+            _current = index % widget.images.length;
             _transformationController.value = Matrix4.identity();
           });
         },
         itemBuilder: (context, index) {
+          final imageIndex = index % widget.images.length;
           return GestureDetector(
             onDoubleTapDown: (details) => _doubleTapDetails = details,
             onDoubleTap: _handleDoubleTap,
@@ -73,8 +77,11 @@ class _FullScreenGalleryScreenState extends State<FullScreenGalleryScreen> {
               maxScale: 4,
               child: Center(
                 child: Hero(
-                  tag: 'product_image_${widget.images[index]}_$index',
-                  child: Image.asset(widget.images[index], fit: BoxFit.contain),
+                  tag: 'product_image_${widget.images[imageIndex]}_$imageIndex',
+                  child: Image.asset(
+                    widget.images[imageIndex],
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),

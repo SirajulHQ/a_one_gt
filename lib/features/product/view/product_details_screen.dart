@@ -28,7 +28,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    final imagesLength = widget.product.images.length;
+    _pageController = PageController(initialPage: imagesLength * 1000);
   }
 
   @override
@@ -59,10 +60,147 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_buildImageGallery(product), _buildDetailsCard(product)],
+          children: [
+            _buildImageGallery(product),
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(28),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          product.name,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "AED ${product.price}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: Appcolors.primaryGreen,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.star_rounded,
+                          color: Colors.amber,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(product.rating.toString()),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Divider(color: Colors.grey.shade100, thickness: 1.5),
+                  const SizedBox(height: 20),
+                  const SectionTitle(title: "Description"),
+                  const SizedBox(height: 12),
+                  Text(product.description),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SectionTitle(title: "Quantity"),
+                      Container(
+                        height: 46,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF6F7FB),
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                if (quantity > 1) setState(() => quantity--);
+                              },
+                              icon: Icon(Icons.remove_rounded),
+                            ),
+                            Text("$quantity Kg"),
+                            IconButton(
+                              onPressed: () => setState(() => quantity++),
+                              icon: Icon(Icons.add_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
-      bottomNavigationBar: _buildBottomBar(product),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "AED ${(product.price * quantity).toStringAsFixed(2)}",
+                style: TextStyle(
+                  color: Appcolors.primaryGreen,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Appcolors.primaryGreen,
+                ),
+                onPressed: () {
+                  final cartService = Provider.of<CartService>(
+                    context,
+                    listen: false,
+                  );
+                  cartService.addItem(product, quantity: quantity);
+                },
+                child: Text(
+                  "Add to Cart",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Dimensions.font16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -97,19 +235,29 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 children: [
                   PageView.builder(
                     controller: _pageController,
-                    itemCount: images.length,
-                    onPageChanged: (i) =>
-                        setState(() => _currentImageIndex = i),
-                    itemBuilder: (_, i) => GestureDetector(
-                      onTap: () => _openFullScreen(i),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Hero(
-                          tag: 'product_image_${product.id}_$i',
-                          child: Image.asset(images[i], fit: BoxFit.contain),
+                    itemCount: null,
+                    onPageChanged: (i) {
+                      setState(() {
+                        _currentImageIndex = i % images.length;
+                      });
+                    },
+                    itemBuilder: (_, i) {
+                      final index = i % images.length;
+
+                      return GestureDetector(
+                        onTap: () => _openFullScreen(index),
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Hero(
+                            tag: 'product_image_${product.id}_$index',
+                            child: Image.asset(
+                              images[index],
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   Positioned(
                     top: 12,
@@ -150,170 +298,26 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
           /// CAROUSEL DOT INDICATOR
           if (images.length > 1) ...[
-            // const SizedBox(height: 10),
-            _buildPageIndicator(images.length),
-            const SizedBox(height: 14),
-          ],
-        ],
-      ),
-    );
-  }
-
-  /// DOT INDICATOR
-  Widget _buildPageIndicator(int count) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        count,
-        (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          height: 6,
-          width: _currentImageIndex == index ? 22 : 6,
-          decoration: BoxDecoration(
-            color: _currentImageIndex == index
-                ? Appcolors.primaryGreen
-                : Colors.grey.shade300,
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ---- DETAILS CARD, QUANTITY, BOTTOM BAR (UNCHANGED) ----
-
-  Widget _buildDetailsCard(Product product) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(28),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  product.name,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                images.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  height: 6,
+                  width: _currentImageIndex == index ? 22 : 6,
+                  decoration: BoxDecoration(
+                    color: _currentImageIndex == index
+                        ? Appcolors.primaryGreen
+                        : Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
-              Text(
-                "AED ${product.price}",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Appcolors.primaryGreen,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          _buildRatingBadge(product.rating),
-          const SizedBox(height: 24),
-          Divider(color: Colors.grey.shade100, thickness: 1.5),
-          const SizedBox(height: 20),
-          const SectionTitle(title: "Description"),
-          const SizedBox(height: 12),
-          Text(product.description),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SectionTitle(title: "Quantity"),
-              _buildQuantitySelector(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRatingBadge(double rating) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.amber.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.star_rounded, color: Colors.amber, size: 18),
-          const SizedBox(width: 5),
-          Text(rating.toString()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuantitySelector() {
-    return Container(
-      height: 46,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF6F7FB),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              if (quantity > 1) setState(() => quantity--);
-            },
-            icon: Icon(Icons.remove_rounded),
-          ),
-          Text("$quantity Kg"),
-          IconButton(
-            onPressed: () => setState(() => quantity++),
-            icon: Icon(Icons.add_rounded),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomBar(Product product) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              "AED ${(product.price * quantity).toStringAsFixed(2)}",
-              style: TextStyle(
-                color: Appcolors.primaryGreen,
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-              ),
             ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolors.primaryGreen,
-              ),
-              onPressed: () {
-                final cartService = Provider.of<CartService>(
-                  context,
-                  listen: false,
-                );
-                cartService.addItem(product, quantity: quantity);
-              },
-              child: const Text("Add to Cart"),
-            ),
-          ),
+            const SizedBox(height: 14),
+          ],
         ],
       ),
     );
