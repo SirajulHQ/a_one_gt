@@ -9,6 +9,7 @@ import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider;
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final Product product;
@@ -167,19 +168,33 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                "AED ${(product.price * quantity).toStringAsFixed(2)}",
-                style: TextStyle(
-                  color: Appcolors.primaryGreen,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Total Price",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                  Text(
+                    "AED ${(product.price * quantity).toStringAsFixed(2)}",
+                    style: TextStyle(
+                      color: Appcolors.primaryGreen,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Appcolors.primaryGreen,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
                 ),
                 onPressed: () {
                   final cartService = Provider.of<CartService>(
@@ -187,13 +202,23 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     listen: false,
                   );
                   cartService.addItem(product, quantity: quantity);
+
+                  // Show success message
+                  toastification.show(
+                    context: context,
+                    title: Text('${product.name} added to cart!'),
+                    type: ToastificationType.success,
+                    style: ToastificationStyle.minimal,
+                    autoCloseDuration: const Duration(seconds: 2),
+                    alignment: Alignment.topCenter,
+                    borderRadius: BorderRadius.circular(10),
+                  );
                 },
-                child: Text(
+                child: const Text(
                   "Add to Cart",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: Dimensions.font16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
