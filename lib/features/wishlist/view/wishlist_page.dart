@@ -29,6 +29,7 @@ class WishlistPage extends ConsumerWidget {
                       final product = wishlistItems[index];
                       return ProductCard(
                         product: product,
+                        showWishlistRemove: true,
                         onTap: () {
                           HapticFeedback.lightImpact();
                           Navigator.push(

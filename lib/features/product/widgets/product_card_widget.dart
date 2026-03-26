@@ -12,8 +12,14 @@ import 'package:toastification/toastification.dart';
 class ProductCard extends ConsumerStatefulWidget {
   final Product product;
   final VoidCallback onTap;
+  final bool showWishlistRemove;
 
-  const ProductCard({super.key, required this.product, required this.onTap});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.onTap,
+    this.showWishlistRemove = false,
+  });
 
   @override
   ConsumerState<ProductCard> createState() => _ProductCardState();
@@ -124,28 +130,82 @@ class _ProductCardState extends ConsumerState<ProductCard>
                       Positioned(
                         top: 4,
                         right: 4,
-                        child: GestureDetector(
-                          onTap: _handleLikeTap,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.85),
-                              shape: BoxShape.circle,
-                            ),
-                            child: ScaleTransition(
-                              scale: _likeAnimation,
-                              child: Icon(
-                                isWishlisted
-                                    ? Icons.favorite_rounded
-                                    : Icons.favorite_border_rounded,
-                                size: 16,
-                                color: isWishlisted
-                                    ? Colors.redAccent
-                                    : Colors.grey,
+                        child: widget.showWishlistRemove
+                            ? GestureDetector(
+                                onTapDown: (details) {
+                                  final overlay =
+                                      Overlay.of(
+                                            context,
+                                          ).context.findRenderObject()
+                                          as RenderBox;
+                                  final position = RelativeRect.fromRect(
+                                    details.globalPosition & const Size(1, 1),
+                                    Offset.zero & overlay.size,
+                                  );
+                                  showMenu(
+                                    context: context,
+                                    position: position,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    items: [
+                                      PopupMenuItem(
+                                        onTap: () {
+                                          HapticFeedback.lightImpact();
+                                          ref
+                                              .read(wishlistProvider.notifier)
+                                              .toggle(widget.product);
+                                        },
+                                        child: const Row(
+                                          children: [
+                                            Icon(
+                                              Icons.favorite_border,
+                                              size: 18,
+                                              color: Colors.redAccent,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text("Remove from Wishlist"),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.85),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.more_vert,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: _handleLikeTap,
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.85),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: ScaleTransition(
+                                    scale: _likeAnimation,
+                                    child: Icon(
+                                      isWishlisted
+                                          ? Icons.favorite_rounded
+                                          : Icons.favorite_border_rounded,
+                                      size: 16,
+                                      color: isWishlisted
+                                          ? Colors.redAccent
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
