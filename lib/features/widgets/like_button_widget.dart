@@ -8,12 +8,14 @@ class LikeButtonWidget extends ConsumerStatefulWidget {
   final Product product;
   final double iconSize;
   final double padding;
+  final Color bgcolor;
 
   const LikeButtonWidget({
     super.key,
     required this.product,
     this.iconSize = 16,
     this.padding = 5,
+    this.bgcolor = const Color(0xD9FFFFFF),
   });
 
   @override
@@ -87,7 +89,7 @@ class _LikeButtonWidgetState extends ConsumerState<LikeButtonWidget>
       child: Container(
         padding: EdgeInsets.all(widget.padding),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.85),
+          color: widget.bgcolor,
           shape: BoxShape.circle,
         ),
         child: ScaleTransition(
