@@ -2,10 +2,9 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
+import 'package:a_one_gt/features/widgets/like_button_widget.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
-import 'package:a_one_gt/features/wishlist/controller/wishlist_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider;
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
@@ -20,104 +19,156 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
       _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen>
-    with SingleTickerProviderStateMixin {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   int quantity = 1;
-
-  late AnimationController _likeController;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Instagram-style animation is very fast (approx 150ms)
-    _likeController = AnimationController(
-      duration: const Duration(milliseconds: 150),
-      vsync: this,
-    );
-
-    // Sequence: 1.0 -> 1.3 (Pop) -> 1.0 (Settle)
-    _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 1.0,
-          end: 1.3,
-        ).chain(CurveTween(curve: Curves.easeOut)),
-        weight: 50,
-      ),
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 1.3,
-          end: 1.0,
-        ).chain(CurveTween(curve: Curves.easeIn)),
-        weight: 50,
-      ),
-    ]).animate(_likeController);
-  }
-
-  @override
-  void dispose() {
-    _likeController.dispose();
-    super.dispose();
-  }
-
-  void _handleLikeTap() {
-    final notifier = ref.read(wishlistProvider.notifier);
-    notifier.toggle(widget.product);
-
-    final isNowLiked = ref
-        .read(wishlistProvider)
-        .any((p) => p.id == widget.product.id);
-
-    if (isNowLiked) {
-      HapticFeedback.mediumImpact();
-      _likeController.forward(from: 0.0);
-    } else {
-      HapticFeedback.lightImpact();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
-    final isLiked = ref.watch(
-      wishlistProvider.select((list) => list.any((p) => p.id == product.id)),
-    );
 
     return Scaffold(
       backgroundColor: Appcolors.background,
-      appBar: CustomAppBar(
-        title: "Product Details",
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.18),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              onPressed: _handleLikeTap,
-              icon: ScaleTransition(
-                scale: _scaleAnimation,
-                child: Icon(
-                  isLiked
-                      ? Icons.favorite_rounded
-                      : Icons.favorite_border_rounded,
-                  size: 22,
-                  color: isLiked ? Colors.redAccent : Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: _buildBottomBar(product),
+      appBar: CustomAppBar(title: "Product Details"),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_buildImageCard(product), _buildDetailsCard(product)],
+          children: [
+            _buildImageCard(product),
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(28),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          product.name,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF1A1A2E),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "AED ${product.price}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: Appcolors.primaryGreen,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  _buildRatingBadge(product.rating),
+                  const SizedBox(height: 24),
+                  Divider(color: Colors.grey.shade100, thickness: 1.5),
+                  const SizedBox(height: 20),
+                  const SectionTitle(title: "Description"),
+                  const SizedBox(height: 12),
+                  Text(
+                    product.description,
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.6,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SectionTitle(title: "Quantity"),
+                      _buildQuantitySelector(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Total Price",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                  Text(
+                    "AED ${(product.price * quantity).toStringAsFixed(2)}",
+                    style: TextStyle(
+                      color: Appcolors.primaryGreen,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Appcolors.primaryGreen,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                onPressed: () {
+                  final cartService = Provider.of<CartService>(
+                    context,
+                    listen: false,
+                  );
+                  cartService.addItem(product, quantity: quantity);
+
+                  // Show success message
+                  toastification.show(
+                    context: context,
+                    title: Text('${product.name} added to cart!'),
+                    type: ToastificationType.success,
+                    style: ToastificationStyle.minimal,
+                    autoCloseDuration: const Duration(seconds: 2),
+                    alignment: Alignment.topCenter,
+                    borderRadius: BorderRadius.circular(10),
+                  );
+                },
+                child: const Text(
+                  "Add to Cart",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -131,107 +182,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: Appcolors.primaryGreen.withOpacity(0.07),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: -10,
-            right: -10,
-            child: Container(
-              // width: 90,
-              // height: 90,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Appcolors.primaryGreen.withOpacity(0.05),
-              ),
-            ),
-          ),
-          Hero(
-            tag: 'product_image_${product.name}',
-            child: Image.asset(
-              product.image,
-              // height: 230,
-              width: double.infinity,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDetailsCard(Product product) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  product.name,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF1A1A2E),
-                  ),
-                ),
-              ),
-              Text(
-                "AED ${product.price}",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: Appcolors.primaryGreen,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          _buildRatingBadge(product.rating),
-          const SizedBox(height: 24),
-          Divider(color: Colors.grey.shade100, thickness: 1.5),
-          const SizedBox(height: 20),
-          const SectionTitle(title: "Description"),
-          const SizedBox(height: 12),
-          Text(
-            product.description,
-            style: TextStyle(
-              fontSize: 14,
-              height: 1.6,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SectionTitle(title: "Quantity"),
-              _buildQuantitySelector(),
-            ],
-          ),
-        ],
+      child: Image.asset(
+        product.image,
+        width: double.infinity,
+        fit: BoxFit.contain,
       ),
     );
   }
@@ -290,76 +245,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen>
               Icons.add_rounded,
               size: 18,
               color: Appcolors.primaryGreen,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomBar(Product product) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Total Price",
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-                Text(
-                  "AED ${(product.price * quantity).toStringAsFixed(2)}",
-                  style: TextStyle(
-                    color: Appcolors.primaryGreen,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Appcolors.primaryGreen,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-              ),
-              onPressed: () {
-                final cartService = Provider.of<CartService>(
-                  context,
-                  listen: false,
-                );
-                cartService.addItem(product, quantity: quantity);
-
-                // Show success message
-                toastification.show(
-                  context: context,
-                  title: Text('${product.name} added to cart!'),
-                  type: ToastificationType.success,
-                  style: ToastificationStyle.minimal,
-                  autoCloseDuration: const Duration(seconds: 2),
-                  alignment: Alignment.topCenter,
-                  borderRadius: BorderRadius.circular(10),
-                );
-              },
-              child: const Text(
-                "Add to Cart",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ),
           ),
         ],
