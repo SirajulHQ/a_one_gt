@@ -8,35 +8,82 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
 
-class SavedAddressesPage extends StatelessWidget {
+class SavedAddressesPage extends StatefulWidget {
   const SavedAddressesPage({super.key});
+
+  @override
+  State<SavedAddressesPage> createState() => _SavedAddressesPageState();
+}
+
+class _SavedAddressesPageState extends State<SavedAddressesPage> {
+  // Holds dynamically added addresses (from GPS or manual add)
+  final List<Map<String, String>> _dynamicAddresses = [];
+
+  void _openLocationPicker() async {
+    HapticFeedback.lightImpact();
+    final locationResult = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(builder: (_) => const CurrentLocationPickerPage()),
+    );
+    if (locationResult == null || !mounted) return;
+
+    // Navigate to AddEditAddressPage with pre-filled GPS data
+    final addressResult = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddEditAddressPage(
+          prefillStreet: locationResult['street'] as String?,
+          prefillCity: locationResult['city'] as String?,
+          prefillState: locationResult['state'] as String?,
+          prefillPincode: locationResult['pincode'] as String?,
+        ),
+      ),
+    );
+
+    if (addressResult != null && mounted) {
+      setState(() {
+        _dynamicAddresses.add({
+          'name': addressResult['name'] as String,
+          'phone': addressResult['phone'] as String,
+          'address': addressResult['address'] as String,
+          'type': addressResult['type'] as String,
+        });
+      });
+    }
+  }
+
+  void _openAddNewAddress() async {
+    HapticFeedback.lightImpact();
+    final result = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(builder: (_) => const AddEditAddressPage()),
+    );
+    if (result != null && mounted) {
+      setState(() {
+        _dynamicAddresses.add({
+          'name': result['name'] as String,
+          'phone': result['phone'] as String,
+          'address': result['address'] as String,
+          'type': result['type'] as String,
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolors.background,
-
-      /// APPBAR
       appBar: CustomAppBar(title: "Saved Address"),
-
-      /// BODY
       body: ListView(
         padding: EdgeInsets.all(Dimensions.width20),
         children: [
-          /// ADD NEW ADDRESS
+          /// TOP BUTTONS
           Row(
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const AddEditAddressPage(),
-                      ),
-                    );
-                  },
+                  onPressed: _openAddNewAddress,
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Appcolors.primaryGreen),
                     shape: RoundedRectangleBorder(
@@ -68,25 +115,7 @@ class SavedAddressesPage extends StatelessWidget {
               SizedBox(width: Dimensions.width15),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CurrentLocationPickerPage(),
-                      ),
-                    ).then((result) {
-                      if (result != null && context.mounted) {
-                        toastification.show(
-                          context: context,
-                          title: Text("Location set: ${result['address']}"),
-                          type: ToastificationType.success,
-                          style: ToastificationStyle.minimal,
-                          autoCloseDuration: const Duration(seconds: 3),
-                        );
-                      }
-                    });
-                  },
+                  onPressed: _openLocationPicker,
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Appcolors.primaryGreen),
                     shape: RoundedRectangleBorder(
@@ -123,7 +152,18 @@ class SavedAddressesPage extends StatelessWidget {
 
           SizedBox(height: Dimensions.height15),
 
-          /// ADDRESS LIST
+          /// DYNAMIC ADDRESSES (from GPS or manual add)
+          ..._dynamicAddresses.map(
+            (a) => _addressCard(
+              context,
+              name: a['name']!,
+              phone: a['phone']!,
+              address: a['address']!,
+              type: a['type']!,
+            ),
+          ),
+
+          /// SAVED ADDRESS LIST
           _addressCard(
             context,
             name: "Sirajul Haque",
@@ -165,7 +205,7 @@ class SavedAddressesPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// HEADER (NAME + TYPE)
+          /// HEADER
           Row(
             children: [
               Text(
@@ -176,8 +216,6 @@ class SavedAddressesPage extends StatelessWidget {
                 ),
               ),
               SizedBox(width: Dimensions.width10),
-
-              /// TYPE TAG
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
@@ -192,7 +230,6 @@ class SavedAddressesPage extends StatelessWidget {
                   ),
                 ),
               ),
-
               if (isSelected) ...[
                 SizedBox(width: Dimensions.width10),
                 const Text(
@@ -209,7 +246,6 @@ class SavedAddressesPage extends StatelessWidget {
 
           SizedBox(height: Dimensions.height10),
 
-          /// ADDRESS
           Text(
             "$address\nPhone: $phone",
             style: TextStyle(color: Colors.grey.shade700, height: 1.4),
@@ -220,7 +256,6 @@ class SavedAddressesPage extends StatelessWidget {
           /// ACTIONS
           Row(
             children: [
-              /// DELIVER HERE BUTTON
               Expanded(
                 child: ActionOutlinedButtonWidget(
                   text: "Deliver Here",
@@ -239,10 +274,7 @@ class SavedAddressesPage extends StatelessWidget {
                   },
                 ),
               ),
-
               SizedBox(width: Dimensions.width20),
-
-              /// EDIT
               ActionOutlinedButtonWidget(
                 text: "Edit",
                 icon: Icons.edit,
@@ -257,17 +289,12 @@ class SavedAddressesPage extends StatelessWidget {
                   );
                 },
               ),
-
               SizedBox(width: Dimensions.width20),
-
-              /// DELETE
               ActionOutlinedButtonWidget(
                 text: "Delete",
                 icon: Icons.delete,
                 color: Colors.red,
-                onPressed: () {
-                  // your delete logic
-                },
+                onPressed: () {},
               ),
             ],
           ),

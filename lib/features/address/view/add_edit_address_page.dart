@@ -7,8 +7,19 @@ import 'package:toastification/toastification.dart';
 
 class AddEditAddressPage extends StatefulWidget {
   final bool isEdit;
+  final String? prefillStreet;
+  final String? prefillCity;
+  final String? prefillState;
+  final String? prefillPincode;
 
-  const AddEditAddressPage({super.key, this.isEdit = false});
+  const AddEditAddressPage({
+    super.key,
+    this.isEdit = false,
+    this.prefillStreet,
+    this.prefillCity,
+    this.prefillState,
+    this.prefillPincode,
+  });
 
   @override
   State<AddEditAddressPage> createState() => _AddEditAddressPageState();
@@ -46,6 +57,15 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
       cityController.text = "Kozhikode";
       stateController.text = "Kerala";
       addressType = "Home";
+    } else {
+      // Pre-fill from GPS if provided
+      if (widget.prefillStreet != null)
+        addressController.text = widget.prefillStreet!;
+      if (widget.prefillCity != null) cityController.text = widget.prefillCity!;
+      if (widget.prefillState != null)
+        stateController.text = widget.prefillState!;
+      if (widget.prefillPincode != null)
+        pincodeController.text = widget.prefillPincode!;
     }
   }
 
@@ -206,6 +226,18 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
       autoCloseDuration: const Duration(seconds: 2),
     );
 
-    Navigator.pop(context);
+    Navigator.pop(
+      context,
+      widget.isEdit
+          ? null
+          : {
+              'name': nameController.text.trim(),
+              'phone': phoneController.text.trim(),
+              'address':
+                  '${addressController.text.trim()}, ${cityController.text.trim()}, '
+                  '${stateController.text.trim()} ${pincodeController.text.trim()}',
+              'type': addressType.toUpperCase(),
+            },
+    );
   }
 }

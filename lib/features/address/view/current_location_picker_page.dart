@@ -21,6 +21,7 @@ class _CurrentLocationPickerPageState extends State<CurrentLocationPickerPage> {
   String _addressText = "Fetching your location...";
   bool _loading = true;
   bool _mapReady = false;
+  Placemark? _placemark;
 
   @override
   void initState() {
@@ -104,12 +105,14 @@ class _CurrentLocationPickerPageState extends State<CurrentLocationPickerPage> {
       setState(() {
         _addressText = parts.isNotEmpty ? parts : "Unknown location";
         _loading = false;
+        _placemark = p;
       });
     } catch (_) {
       setState(() {
         _addressText =
             "${latlng.latitude.toStringAsFixed(5)}, ${latlng.longitude.toStringAsFixed(5)}";
         _loading = false;
+        _placemark = null;
       });
     }
   }
@@ -238,6 +241,13 @@ class _CurrentLocationPickerPageState extends State<CurrentLocationPickerPage> {
                           ? null
                           : () => Navigator.pop(context, {
                               'address': _addressText,
+                              'street':
+                                  [_placemark?.street, _placemark?.subLocality]
+                                      .where((s) => s != null && s.isNotEmpty)
+                                      .join(', '),
+                              'city': _placemark?.locality ?? '',
+                              'state': _placemark?.administrativeArea ?? '',
+                              'pincode': _placemark?.postalCode ?? '',
                               'latlng': _pickedLocation,
                             }),
                       style: ElevatedButton.styleFrom(
