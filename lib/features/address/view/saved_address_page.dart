@@ -23,36 +23,82 @@ class SavedAddressesPage extends StatelessWidget {
         padding: EdgeInsets.all(Dimensions.width20),
         children: [
           /// ADD NEW ADDRESS
-          OutlinedButton(
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const AddEditAddressPage()),
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.all(Dimensions.width20),
-              side: BorderSide(color: Appcolors.primaryGreen),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Dimensions.radius15),
-              ),
-              backgroundColor: Colors.white,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.add, color: Appcolors.primaryGreen),
-                SizedBox(width: Dimensions.width10),
-                Text(
-                  "Add a new address",
-                  style: TextStyle(
-                    color: Appcolors.primaryGreen,
-                    fontWeight: FontWeight.w600,
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddEditAddressPage(),
+                      ),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: Appcolors.primaryGreen),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.radius15 - 10,
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add, color: Appcolors.primaryGreen),
+                      SizedBox(width: Dimensions.width10),
+                      Text(
+                        "Add a new address",
+                        style: TextStyle(
+                          color: Appcolors.primaryGreen,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              SizedBox(width: Dimensions.width15),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: Appcolors.primaryGreen),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.radius15 - 10,
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: Appcolors.primaryGreen,
+                        ),
+                        SizedBox(width: Dimensions.width10),
+                        Text(
+                          "Use Current Location",
+                          style: TextStyle(
+                            color: Appcolors.primaryGreen,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
 
           SizedBox(height: Dimensions.height15),
