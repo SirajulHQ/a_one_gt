@@ -1,6 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/add_edit_address_page.dart';
+import 'package:a_one_gt/features/address/view/current_location_picker_page.dart';
 import 'package:a_one_gt/features/address/widgets/action_outlined_button_widget.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -45,19 +46,22 @@ class SavedAddressesPage extends StatelessWidget {
                     ),
                     backgroundColor: Colors.white,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.add, color: Appcolors.primaryGreen),
-                      SizedBox(width: Dimensions.width10),
-                      Text(
-                        "Add a new address",
-                        style: TextStyle(
-                          color: Appcolors.primaryGreen,
-                          fontWeight: FontWeight.w600,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.add, color: Appcolors.primaryGreen),
+                        SizedBox(width: Dimensions.width10),
+                        Text(
+                          "Add a new address",
+                          style: TextStyle(
+                            color: Appcolors.primaryGreen,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -66,6 +70,22 @@ class SavedAddressesPage extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () {
                     HapticFeedback.lightImpact();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const CurrentLocationPickerPage(),
+                      ),
+                    ).then((result) {
+                      if (result != null && context.mounted) {
+                        toastification.show(
+                          context: context,
+                          title: Text("Location set: ${result['address']}"),
+                          type: ToastificationType.success,
+                          style: ToastificationStyle.minimal,
+                          autoCloseDuration: const Duration(seconds: 3),
+                        );
+                      }
+                    });
                   },
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Appcolors.primaryGreen),
