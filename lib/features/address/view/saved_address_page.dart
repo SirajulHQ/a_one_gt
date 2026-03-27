@@ -18,6 +18,7 @@ class SavedAddressesPage extends StatefulWidget {
 class _SavedAddressesPageState extends State<SavedAddressesPage> {
   // Holds dynamically added addresses (from GPS or manual add)
   final List<Map<String, String>> _dynamicAddresses = [];
+  int _selectedIndex = 0; // 0 = first static card selected by default
 
   void _openLocationPicker() async {
     HapticFeedback.lightImpact();
@@ -153,29 +154,31 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
           SizedBox(height: Dimensions.height15),
 
           /// DYNAMIC ADDRESSES (from GPS or manual add)
-          ..._dynamicAddresses.map(
-            (a) => _addressCard(
+          ..._dynamicAddresses.asMap().entries.map(
+            (e) => _addressCard(
               context,
-              name: a['name']!,
-              phone: a['phone']!,
-              address: a['address']!,
-              type: a['type']!,
+              index: e.key,
+              name: e.value['name']!,
+              phone: e.value['phone']!,
+              address: e.value['address']!,
+              type: e.value['type']!,
             ),
           ),
 
           /// SAVED ADDRESS LIST
           _addressCard(
             context,
+            index: _dynamicAddresses.length,
             name: "Sirajul Haque",
             phone: "+91 9876543210",
             address:
                 "Hilite Business Park, Ground Floor, Poovangal, Kozhikode, Kerala 673014",
             type: "HOME",
-            isSelected: true,
           ),
 
           _addressCard(
             context,
+            index: _dynamicAddresses.length + 1,
             name: "Sirajul Haque",
             phone: "+91 9876543210",
             address: "Cyber Park, Kozhikode, Kerala 673016",
@@ -189,18 +192,22 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
   /// ADDRESS CARD
   Widget _addressCard(
     BuildContext context, {
+    required int index,
     required String name,
     required String phone,
     required String address,
     required String type,
-    bool isSelected = false,
   }) {
+    final isSelected = _selectedIndex == index;
     return Container(
       margin: EdgeInsets.only(bottom: Dimensions.height15),
       padding: EdgeInsets.all(Dimensions.width20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(Dimensions.radius15),
+        border: isSelected
+            ? Border.all(color: Appcolors.primaryGreen, width: 1.5)
+            : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,14 +265,16 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
             children: [
               Expanded(
                 child: ActionOutlinedButtonWidget(
-                  text: "Deliver Here",
+                  text: isSelected ? "Delivering Here" : "Deliver Here",
                   color: Appcolors.primaryGreen,
                   isExpanded: true,
+                  isFilled: isSelected,
                   padding: EdgeInsets.symmetric(
                     horizontal: Dimensions.width20,
                     vertical: 10,
                   ),
                   onPressed: () {
+                    setState(() => _selectedIndex = index);
                     toastification.show(
                       context: context,
                       title: const Text("Address selected"),

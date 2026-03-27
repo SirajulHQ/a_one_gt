@@ -9,6 +9,7 @@ class ActionOutlinedButtonWidget extends StatelessWidget {
   final bool useHaptic;
   final EdgeInsetsGeometry? padding;
   final bool isExpanded;
+  final bool isFilled;
 
   const ActionOutlinedButtonWidget({
     super.key,
@@ -19,6 +20,7 @@ class ActionOutlinedButtonWidget extends StatelessWidget {
     this.useHaptic = true,
     this.padding,
     this.isExpanded = false,
+    this.isFilled = false,
   });
 
   @override
@@ -37,23 +39,27 @@ class ActionOutlinedButtonWidget extends StatelessWidget {
               padding ??
               const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           side: BorderSide(color: buttonColor),
+          backgroundColor: isFilled ? buttonColor : Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize:
-              isExpanded ? MainAxisSize.max : MainAxisSize.min,
+          mainAxisSize: isExpanded ? MainAxisSize.max : MainAxisSize.min,
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 16, color: buttonColor),
+              Icon(
+                icon,
+                size: 16,
+                color: isFilled ? Colors.white : buttonColor,
+              ),
               const SizedBox(width: 6),
             ],
             Text(
               text,
               style: TextStyle(
-                color: buttonColor,
+                color: isFilled ? Colors.white : buttonColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
