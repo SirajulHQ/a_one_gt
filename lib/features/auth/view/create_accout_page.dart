@@ -6,27 +6,6 @@ import 'package:flutter/services.dart';
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({super.key});
 
-  Widget buildTextField(String hint) {
-    return Container(
-      height: Dimensions.height45 + 5,
-      padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-      decoration: BoxDecoration(
-        color: const Color(0xffEDEDED),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hint,
-          hintStyle: TextStyle(
-            color: Colors.grey,
-            fontSize: Dimensions.font16 - 1,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +61,11 @@ class CreateAccountPage extends StatelessWidget {
 
               /// Email
               buildTextField("Email Address"),
+
+              SizedBox(height: Dimensions.height20),
+
+              /// Email
+              buildTextField("Phone Number"),
 
               SizedBox(height: Dimensions.height20),
 
@@ -143,6 +127,27 @@ class CreateAccountPage extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildTextField(String hint) {
+    return Container(
+      height: Dimensions.height45 + 5,
+      padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+      decoration: BoxDecoration(
+        color: const Color(0xffEDEDED),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: hint,
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: Dimensions.font16 - 1,
           ),
         ),
       ),
