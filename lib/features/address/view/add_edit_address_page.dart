@@ -11,6 +11,9 @@ class AddEditAddressPage extends StatefulWidget {
   final String? prefillCity;
   final String? prefillState;
   final String? prefillPincode;
+  final String? prefillName;
+  final String? prefillPhone;
+  final String? prefillType;
 
   const AddEditAddressPage({
     super.key,
@@ -19,6 +22,9 @@ class AddEditAddressPage extends StatefulWidget {
     this.prefillCity,
     this.prefillState,
     this.prefillPincode,
+    this.prefillName,
+    this.prefillPhone,
+    this.prefillType,
   });
 
   @override
@@ -49,23 +55,22 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
   void initState() {
     super.initState();
 
-    if (widget.isEdit) {
-      nameController.text = "Sirajul Haque";
-      phoneController.text = "9876543210";
-      pincodeController.text = "673014";
-      addressController.text = "Hilite Business Park, Ground Floor";
-      cityController.text = "Kozhikode";
-      stateController.text = "Kerala";
-      addressType = "Home";
-    } else {
-      // Pre-fill from GPS if provided
-      if (widget.prefillStreet != null)
-        addressController.text = widget.prefillStreet!;
-      if (widget.prefillCity != null) cityController.text = widget.prefillCity!;
-      if (widget.prefillState != null)
-        stateController.text = widget.prefillState!;
-      if (widget.prefillPincode != null)
-        pincodeController.text = widget.prefillPincode!;
+    if (widget.prefillName != null) nameController.text = widget.prefillName!;
+    if (widget.prefillPhone != null)
+      phoneController.text = widget.prefillPhone!;
+    if (widget.prefillStreet != null)
+      addressController.text = widget.prefillStreet!;
+    if (widget.prefillCity != null) cityController.text = widget.prefillCity!;
+    if (widget.prefillState != null)
+      stateController.text = widget.prefillState!;
+    if (widget.prefillPincode != null)
+      pincodeController.text = widget.prefillPincode!;
+    if (widget.prefillType != null) {
+      final matched = addressTypes.firstWhere(
+        (t) => t.toUpperCase() == widget.prefillType!.toUpperCase(),
+        orElse: () => "Home",
+      );
+      addressType = matched;
     }
   }
 
@@ -92,11 +97,6 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
                 "Phone Number",
                 phoneController,
                 keyboard: TextInputType.phone,
-              ),
-              _inputField(
-                "Pincode",
-                pincodeController,
-                keyboard: TextInputType.number,
               ),
               _inputField("Address (House, Area)", addressController),
               _inputField("City", cityController),
@@ -145,7 +145,6 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
     );
   }
 
-  /// INPUT FIELD
   Widget _inputField(
     String hint,
     TextEditingController controller, {
@@ -178,7 +177,6 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
     );
   }
 
-  /// 🔥 DROPDOWN
   Widget _addressTypeDropdown() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
@@ -216,6 +214,13 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
 
     HapticFeedback.mediumImpact();
 
+    String fullAddress =
+        '${addressController.text.trim()}, ${cityController.text.trim()}, ${stateController.text.trim()}';
+
+    if (pincodeController.text.trim().isNotEmpty) {
+      fullAddress += ' ${pincodeController.text.trim()}';
+    }
+
     toastification.show(
       context: context,
       title: Text(
@@ -224,6 +229,8 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
             : "Address added successfully",
       ),
       autoCloseDuration: const Duration(seconds: 2),
+      type: ToastificationType.success,
+      style: ToastificationStyle.minimal,
     );
 
     Navigator.pop(
@@ -233,9 +240,11 @@ class _AddEditAddressPageState extends State<AddEditAddressPage> {
           : {
               'name': nameController.text.trim(),
               'phone': phoneController.text.trim(),
-              'address':
-                  '${addressController.text.trim()}, ${cityController.text.trim()}, '
-                  '${stateController.text.trim()} ${pincodeController.text.trim()}',
+              'address': fullAddress,
+              'street': addressController.text.trim(),
+              'city': cityController.text.trim(),
+              'state': stateController.text.trim(),
+              'pincode': pincodeController.text.trim(),
               'type': addressType.toUpperCase(),
             },
     );

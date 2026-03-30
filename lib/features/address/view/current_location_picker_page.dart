@@ -229,6 +229,7 @@ class _CurrentLocationPickerPageState extends State<CurrentLocationPickerPage> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                       gradient: LinearGradient(
                         colors: [
                           Appcolors.gradientColor1,
@@ -256,7 +257,7 @@ class _CurrentLocationPickerPageState extends State<CurrentLocationPickerPage> {
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: const Text(

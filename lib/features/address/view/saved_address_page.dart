@@ -2,7 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/add_edit_address_page.dart';
 import 'package:a_one_gt/features/address/view/current_location_picker_page.dart';
-import 'package:a_one_gt/features/address/widgets/action_outlined_button_widget.dart';
+import 'package:a_one_gt/features/address/widgets/address_card_widget.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,9 +16,8 @@ class SavedAddressesPage extends StatefulWidget {
 }
 
 class _SavedAddressesPageState extends State<SavedAddressesPage> {
-  // Holds dynamically added addresses (from GPS or manual add)
   final List<Map<String, String>> _dynamicAddresses = [];
-  int _selectedIndex = 0; // 0 = first static card selected by default
+  int _selectedIndex = 0;
 
   void _openLocationPicker() async {
     HapticFeedback.lightImpact();
@@ -28,7 +27,6 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
     );
     if (locationResult == null || !mounted) return;
 
-    // Navigate to AddEditAddressPage with pre-filled GPS data
     final addressResult = await Navigator.push<Map<String, dynamic>>(
       context,
       MaterialPageRoute(
@@ -42,14 +40,7 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
     );
 
     if (addressResult != null && mounted) {
-      setState(() {
-        _dynamicAddresses.add({
-          'name': addressResult['name'] as String,
-          'phone': addressResult['phone'] as String,
-          'address': addressResult['address'] as String,
-          'type': addressResult['type'] as String,
-        });
-      });
+      setState(() => _dynamicAddresses.add(_mapFromResult(addressResult)));
     }
   }
 
@@ -60,16 +51,105 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
       MaterialPageRoute(builder: (_) => const AddEditAddressPage()),
     );
     if (result != null && mounted) {
-      setState(() {
-        _dynamicAddresses.add({
-          'name': result['name'] as String,
-          'phone': result['phone'] as String,
-          'address': result['address'] as String,
-          'type': result['type'] as String,
-        });
-      });
+      setState(() => _dynamicAddresses.add(_mapFromResult(result)));
     }
   }
+
+  void _openEditAddress({
+    required String name,
+    required String phone,
+    String? street,
+    String? city,
+    String? state,
+    String? pincode,
+    required String type,
+  }) {
+    HapticFeedback.lightImpact();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddEditAddressPage(
+          isEdit: true,
+          prefillName: name,
+          prefillPhone: phone,
+          prefillStreet: street,
+          prefillCity: city,
+          prefillState: state,
+          prefillPincode: pincode,
+          prefillType: type,
+        ),
+      ),
+    );
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+
+  Map<String, String> _mapFromResult(Map<String, dynamic> result) => {
+    'name': result['name'] as String,
+    'phone': result['phone'] as String,
+    'address': result['address'] as String,
+    'street': result['street'] as String,
+    'city': result['city'] as String,
+    'state': result['state'] as String,
+    'pincode': result['pincode'] as String,
+    'type': result['type'] as String,
+  };
+
+  void _selectAddress(int index) {
+    setState(() => _selectedIndex = index);
+    toastification.show(
+      context: context,
+      title: const Text("Address selected"),
+      autoCloseDuration: const Duration(seconds: 2),
+      type: ToastificationType.success,
+      style: ToastificationStyle.minimal,
+    );
+  }
+
+  void _confirmDelete(int dynamicIndex) {
+    HapticFeedback.lightImpact();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimensions.radius15),
+        ),
+        title: const Text("Delete Address"),
+        content: const Text("Are you sure you want to delete this address?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              setState(() {
+                if (_selectedIndex == dynamicIndex) _selectedIndex = 0;
+                _dynamicAddresses.removeAt(dynamicIndex);
+              });
+              toastification.show(
+                context: context,
+                title: const Text("Address deleted"),
+                autoCloseDuration: const Duration(seconds: 2),
+                type: ToastificationType.error,
+                style: ToastificationStyle.minimal,
+              );
+            },
+            child: const Text(
+              "Delete",
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Build ─────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -79,235 +159,87 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
       body: ListView(
         padding: EdgeInsets.all(Dimensions.width20),
         children: [
-          /// TOP BUTTONS
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
+                child: _topButton(
+                  label: "Add a new address",
+                  icon: Icons.add,
                   onPressed: _openAddNewAddress,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Appcolors.primaryGreen),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Dimensions.radius15 - 10,
-                      ),
-                    ),
-                    backgroundColor: Colors.white,
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.add, color: Appcolors.primaryGreen),
-                        SizedBox(width: Dimensions.width10),
-                        Text(
-                          "Add a new address",
-                          style: TextStyle(
-                            color: Appcolors.primaryGreen,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
               SizedBox(width: Dimensions.width15),
               Expanded(
-                child: OutlinedButton(
+                child: _topButton(
+                  label: "Use Current Location",
+                  icon: Icons.location_on_outlined,
                   onPressed: _openLocationPicker,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Appcolors.primaryGreen),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        Dimensions.radius15 - 10,
-                      ),
-                    ),
-                    backgroundColor: Colors.white,
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: Appcolors.primaryGreen,
-                        ),
-                        SizedBox(width: Dimensions.width10),
-                        Text(
-                          "Use Current Location",
-                          style: TextStyle(
-                            color: Appcolors.primaryGreen,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
             ],
           ),
-
           SizedBox(height: Dimensions.height15),
-
-          /// DYNAMIC ADDRESSES (from GPS or manual add)
           ..._dynamicAddresses.asMap().entries.map(
-            (e) => _addressCard(
-              context,
+            (e) => AddressCardWidget(
               index: e.key,
+              selectedIndex: _selectedIndex,
               name: e.value['name']!,
               phone: e.value['phone']!,
               address: e.value['address']!,
               type: e.value['type']!,
+              street: e.value['street'],
+              city: e.value['city'],
+              state: e.value['state'],
+              pincode: e.value['pincode'],
+              dynamicIndex: e.key,
+              onSelect: _selectAddress,
+              onEdit: () => _openEditAddress(
+                name: e.value['name']!,
+                phone: e.value['phone']!,
+                street: e.value['street'],
+                city: e.value['city'],
+                state: e.value['state'],
+                pincode: e.value['pincode'],
+                type: e.value['type']!,
+              ),
+              onDelete: _confirmDelete,
             ),
-          ),
-
-          /// SAVED ADDRESS LIST
-          _addressCard(
-            context,
-            index: _dynamicAddresses.length,
-            name: "Sirajul Haque",
-            phone: "+91 9876543210",
-            address:
-                "Hilite Business Park, Ground Floor, Poovangal, Kozhikode, Kerala 673014",
-            type: "HOME",
-          ),
-
-          _addressCard(
-            context,
-            index: _dynamicAddresses.length + 1,
-            name: "Sirajul Haque",
-            phone: "+91 9876543210",
-            address: "Cyber Park, Kozhikode, Kerala 673016",
-            type: "WORK",
           ),
         ],
       ),
     );
   }
 
-  /// ADDRESS CARD
-  Widget _addressCard(
-    BuildContext context, {
-    required int index,
-    required String name,
-    required String phone,
-    required String address,
-    required String type,
+  Widget _topButton({
+    required String label,
+    required IconData icon,
+    required VoidCallback onPressed,
   }) {
-    final isSelected = _selectedIndex == index;
-    return Container(
-      margin: EdgeInsets.only(bottom: Dimensions.height15),
-      padding: EdgeInsets.all(Dimensions.width20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(Dimensions.radius15),
-        border: isSelected
-            ? Border.all(color: Appcolors.primaryGreen, width: 1.5)
-            : null,
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: Appcolors.primaryGreen),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimensions.radius15 - 10),
+        ),
+        backgroundColor: Colors.white,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /// HEADER
-          Row(
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: Dimensions.font16,
-                ),
-              ),
-              SizedBox(width: Dimensions.width10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  type,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              if (isSelected) ...[
-                SizedBox(width: Dimensions.width10),
-                const Text(
-                  "SELECTED",
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ],
-          ),
-
-          SizedBox(height: Dimensions.height10),
-
-          Text(
-            "$address\nPhone: $phone",
-            style: TextStyle(color: Colors.grey.shade700, height: 1.4),
-          ),
-
-          SizedBox(height: Dimensions.height15),
-
-          /// ACTIONS
-          Row(
-            children: [
-              Expanded(
-                child: ActionOutlinedButtonWidget(
-                  text: isSelected ? "Delivering Here" : "Deliver Here",
-                  color: Appcolors.primaryGreen,
-                  isExpanded: true,
-                  isFilled: isSelected,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Dimensions.width20,
-                    vertical: 10,
-                  ),
-                  onPressed: () {
-                    setState(() => _selectedIndex = index);
-                    toastification.show(
-                      context: context,
-                      title: const Text("Address selected"),
-                      autoCloseDuration: const Duration(seconds: 2),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(width: Dimensions.width20),
-              ActionOutlinedButtonWidget(
-                text: "Edit",
-                icon: Icons.edit,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Appcolors.primaryGreen),
+            SizedBox(width: Dimensions.width10),
+            Text(
+              label,
+              style: TextStyle(
                 color: Appcolors.primaryGreen,
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const AddEditAddressPage(isEdit: true),
-                    ),
-                  );
-                },
+                fontWeight: FontWeight.w600,
               ),
-              SizedBox(width: Dimensions.width20),
-              ActionOutlinedButtonWidget(
-                text: "Delete",
-                icon: Icons.delete,
-                color: Colors.red,
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
