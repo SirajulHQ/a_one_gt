@@ -292,7 +292,31 @@ class OrderCardWidget extends StatelessWidget {
 
                               ...List.generate(
                                 (order["items"] as List).length,
-                                (i) => Text(order["items"][i]),
+                                (i) {
+                                  final item = order["items"][i] as Map;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          item["name"],
+                                          style: TextStyle(
+                                            color: Colors.grey.shade700,
+                                          ),
+                                        ),
+                                        Text(
+                                          "AED ${item["price"]}",
+                                          style: TextStyle(
+                                            color: Appcolors.primaryGreen,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
 
                               SizedBox(height: Dimensions.height10),

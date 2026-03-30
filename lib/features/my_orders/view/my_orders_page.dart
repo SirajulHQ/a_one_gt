@@ -20,7 +20,10 @@ class _MyOrdersPageState extends State<MyOrdersPage>
       "date": "12 Mar 2026",
       "price": 499,
       "status": "Delivered",
-      "items": ["Chicken Burger", "Pepsi"],
+      "items": [
+        {"name": "Chicken Burger", "price": 299},
+        {"name": "Pepsi", "price": 200},
+      ],
       "address": "Dubai Marina",
       "isExpanded": false,
     },
@@ -29,7 +32,10 @@ class _MyOrdersPageState extends State<MyOrdersPage>
       "date": "10 Mar 2026",
       "price": 899,
       "status": "Processing",
-      "items": ["Pizza", "Fries"],
+      "items": [
+        {"name": "Pizza", "price": 599},
+        {"name": "Fries", "price": 300},
+      ],
       "address": "JLT Cluster A",
       "isExpanded": false,
     },
@@ -38,7 +44,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
       "date": "05 Mar 2026",
       "price": 299,
       "status": "Cancelled",
-      "items": ["Sandwich"],
+      "items": [
+        {"name": "Sandwich", "price": 299},
+      ],
       "address": "Downtown Dubai",
       "isExpanded": false,
     },
@@ -85,36 +93,142 @@ class _MyOrdersPageState extends State<MyOrdersPage>
   void _confirmReturn(int index) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Dimensions.radius15),
-        ),
-        title: const Text("Return Order"),
-        content: Text(
-          "Are you sure you want to return order ${orders[index]["orderId"]}?",
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.grey.shade600),
-            ),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(Dimensions.radius20 + 4),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              setState(() => orders[index]["status"] = "Returned");
-            },
-            child: Text(
-              "Return",
-              style: TextStyle(
-                color: Colors.red.shade400,
-                fontWeight: FontWeight.bold,
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              /// Gradient Header
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  vertical: Dimensions.height30,
+                  horizontal: Dimensions.width20,
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Appcolors.gradientColor1,
+                      Appcolors.gradientColor2,
+                    ],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: Dimensions.height45 + 20,
+                      height: Dimensions.height45 + 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.15),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.25),
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.assignment_return_rounded,
+                        color: Colors.white,
+                        size: Dimensions.iconSize24 + 4,
+                      ),
+                    ),
+                    SizedBox(height: Dimensions.height10),
+                    Text(
+                      "Return Order?",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Dimensions.font20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: Dimensions.height10 / 2),
+                    Text(
+                      "Are you sure you want to return order ${orders[index]["orderId"]}?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.8),
+                        fontSize: Dimensions.font16 - 2,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+
+              /// Buttons
+              Padding(
+                padding: EdgeInsets.all(Dimensions.width20),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      height: Dimensions.height45,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red.shade50,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              Dimensions.radius15,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          HapticFeedback.mediumImpact();
+                          Navigator.pop(context);
+                          setState(() => orders[index]["status"] = "Returned");
+                        },
+                        child: const Text(
+                          "Yes, Return Order",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: Dimensions.height10),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: Dimensions.height45,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black87,
+                          side: BorderSide(color: Colors.grey.shade300),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              Dimensions.radius15,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          HapticFeedback.lightImpact();
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
