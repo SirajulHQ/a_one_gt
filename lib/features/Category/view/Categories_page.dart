@@ -22,18 +22,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
     "assets/images/banner_03.jpg",
   ];
 
-  final List<Map<String, String>> categories = [
-    {"title": "Grocery", "image": "assets/images/grocery.png"},
-    {"title": "Clothing", "image": "assets/images/cloths.jpg"},
-    {"title": "Electronics", "image": "assets/images/electronics.jpg"},
-    {"title": "Nutrition", "image": "assets/images/grocery.png"},
-    {"title": "Gym Products", "image": "assets/images/grocery.png"},
-    {"title": "Travel", "image": "assets/images/grocery.png"},
-    {"title": "Jewellery", "image": "assets/images/jewellery.jpg"},
-    {"title": "Games", "image": "assets/images/grocery.png"},
-    {"title": "E-books", "image": "assets/images/grocery.png"},
+  final List<String> categories = [
+    "Grocery",
+    "Clothing",
+    "Electronics",
+    "Nutrition",
+    "Gym Products",
+    "Travel",
+    "Jewellery",
+    "Games",
+    "E-boooks",
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,8 +199,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    MainNavigationPage(category: category["title"]!),
+                builder: (context) => MainNavigationPage(category: category),
               ),
             );
           },
@@ -214,7 +212,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  category["image"]!,
+                  "assets/images/grocery.png",
                   height: Dimensions.height45 * 2,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -226,10 +224,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   },
                 ),
                 SizedBox(height: Dimensions.height10),
-                Text(
-                  category["title"]!,
-                  style: TextStyle(fontSize: Dimensions.font16),
-                ),
+                Text(category, style: TextStyle(fontSize: Dimensions.font16)),
               ],
             ),
           ),
@@ -253,8 +248,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    MainNavigationPage(category: category["title"]!),
+                builder: (context) => MainNavigationPage(category: category),
               ),
             );
           },
@@ -267,7 +261,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             child: Row(
               children: [
                 Image.asset(
-                  category["image"]!,
+                  "assets/images/grocery.png",
                   height: Dimensions.height45,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -279,10 +273,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   },
                 ),
                 SizedBox(width: Dimensions.width15),
-                Text(
-                  category["title"]!,
-                  style: TextStyle(fontSize: Dimensions.font16),
-                ),
+                Text(category, style: TextStyle(fontSize: Dimensions.font16)),
               ],
             ),
           ),

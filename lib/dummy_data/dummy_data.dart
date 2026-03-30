@@ -1,65 +1,23 @@
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 
-/// CATEGORY IMAGES
-final Map<String, String> productImages = {
-  "Grocery": "assets/images/grocery_2.jpg",
-  "Clothing": "assets/images/clothing.jpg",
-  "Electronics": "assets/images/electronics.jpg",
-  "Nutrition": "assets/images/nutrition.jpg",
-  "Gym Products": "assets/images/gym_products.jpg",
-  "Travel": "assets/images/travel.jpg",
-  "Jewellery": "assets/images/jewellery.jpg",
-  "Games": "assets/images/games.jpg",
-  "E-books": "assets/images/e_books.jpg",
-};
+final List<String> productImages = ["assets/images/nutrition.jpg"];
 
-/// Extra images per category for gallery (reusing available assets)
+final List<String> defaultGalleryImages = [
+  "assets/images/nutrition.jpg",
+  "assets/images/gym_products.jpg",
+  "assets/images/clothing.jpg",
+];
+
 final Map<String, List<String>> productGalleryImages = {
-  "Grocery": [
-    "assets/images/grocery_2.jpg",
-    "assets/images/jewellery.jpg",
-    "assets/images/nutrition.jpg",
-  ],
-  "Clothing": [
-    "assets/images/clothing.jpg",
-    "assets/images/nutrition.jpg",
-    "assets/images/gym_products.jpg",
-  ],
-  "Electronics": [
-    "assets/images/electronics.jpg",
-    "assets/images/games.jpg",
-    "assets/images/e_books.jpg",
-  ],
-  "Nutrition": [
-    "assets/images/nutrition.jpg",
-    "assets/images/jewellery.jpg",
-    "assets/images/gym_products.jpg",
-  ],
-  "Gym Products": [
-    "assets/images/gym_products.jpg",
-    "assets/images/nutrition.jpg",
-    "assets/images/clothing.jpg",
-  ],
-  "Travel": [
-    "assets/images/travel.jpg",
-    "assets/images/gym_products.jpg",
-    "assets/images/grocery_2.jpg",
-  ],
-  "Jewellery": [
-    "assets/images/jewellery.jpg",
-    "assets/images/clothing.jpg",
-    "assets/images/gym_products.jpg",
-  ],
-  "Games": [
-    "assets/images/games.jpg",
-    "assets/images/electronics.jpg",
-    "assets/images/e_books.jpg",
-  ],
-  "E-books": [
-    "assets/images/e_books.jpg",
-    "assets/images/games.jpg",
-    "assets/images/electronics.jpg",
-  ],
+  "Grocery": defaultGalleryImages,
+  "Clothing": defaultGalleryImages,
+  "Electronics": defaultGalleryImages,
+  "Nutrition": defaultGalleryImages,
+  "Gym Products": defaultGalleryImages,
+  "Travel": defaultGalleryImages,
+  "Jewellery": defaultGalleryImages,
+  "Games": defaultGalleryImages,
+  "E-books": defaultGalleryImages,
 };
 
 final Map<String, String> subCategoryImages = {
@@ -138,7 +96,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g1',
     name: 'Banana',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 4,
     category: 'Grocery',
@@ -150,7 +108,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g2',
     name: 'Tomato',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 3,
     category: 'Grocery',
@@ -162,7 +120,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g3',
     name: 'Potato',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 2,
     category: 'Grocery',
@@ -174,7 +132,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g4',
     name: 'Carrot',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 3,
     category: 'Grocery',
@@ -186,7 +144,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g5',
     name: 'Spinach',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 2,
     category: 'Grocery',
@@ -198,7 +156,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g6',
     name: 'Milk',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 5,
     category: 'Grocery',
@@ -210,7 +168,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g7',
     name: 'Bread',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 3,
     category: 'Grocery',
@@ -222,7 +180,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g8',
     name: 'Eggs',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 6,
     category: 'Grocery',
@@ -234,7 +192,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g9',
     name: 'Rice',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 12,
     category: 'Grocery',
@@ -246,7 +204,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'g10',
     name: 'Olive Oil',
-    image: productImages['Grocery']!,
+    image: productImages[0],
     images: productGalleryImages['Grocery']!,
     price: 18,
     category: 'Grocery',
@@ -259,7 +217,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl1',
     name: 'Cotton T-Shirt',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 20,
     category: 'Clothing',
@@ -271,7 +229,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl2',
     name: 'Denim Jeans',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 45,
     category: 'Clothing',
@@ -283,7 +241,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl3',
     name: 'Hoodie',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 35,
     category: 'Clothing',
@@ -295,7 +253,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl4',
     name: 'Jacket',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 60,
     category: 'Clothing',
@@ -307,7 +265,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl5',
     name: 'Shorts',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 22,
     category: 'Clothing',
@@ -319,7 +277,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl6',
     name: 'Sweater',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 40,
     category: 'Clothing',
@@ -331,7 +289,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl7',
     name: 'Formal Shirt',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 30,
     category: 'Clothing',
@@ -343,7 +301,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl8',
     name: 'Track Pants',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 28,
     category: 'Clothing',
@@ -355,7 +313,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl9',
     name: 'Sports Jersey',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 35,
     category: 'Clothing',
@@ -367,7 +325,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'cl10',
     name: 'Winter Coat',
-    image: productImages['Clothing']!,
+    image: productImages[0],
     images: productGalleryImages['Clothing']!,
     price: 80,
     category: 'Clothing',
@@ -380,7 +338,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e1',
     name: 'Smartphone',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 699,
     category: 'Electronics',
@@ -392,7 +350,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e2',
     name: 'Laptop',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 1200,
     category: 'Electronics',
@@ -404,7 +362,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e3',
     name: 'Wireless Earbuds',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 99,
     category: 'Electronics',
@@ -416,7 +374,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e4',
     name: 'Smart Watch',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 199,
     category: 'Electronics',
@@ -428,7 +386,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e5',
     name: 'Bluetooth Speaker',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 120,
     category: 'Electronics',
@@ -440,7 +398,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e6',
     name: 'Tablet',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 400,
     category: 'Electronics',
@@ -452,7 +410,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e7',
     name: 'Gaming Mouse',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 70,
     category: 'Electronics',
@@ -464,7 +422,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e8',
     name: 'Mechanical Keyboard',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 110,
     category: 'Electronics',
@@ -476,7 +434,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e9',
     name: 'Monitor',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 250,
     category: 'Electronics',
@@ -488,7 +446,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'e10',
     name: 'Power Bank',
-    image: productImages['Electronics']!,
+    image: productImages[0],
     images: productGalleryImages['Electronics']!,
     price: 45,
     category: 'Electronics',
@@ -503,7 +461,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n1',
     name: 'Protein Powder',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 60,
     category: 'Nutrition',
@@ -515,7 +473,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n2',
     name: 'Multivitamin',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 25,
     category: 'Nutrition',
@@ -527,7 +485,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n3',
     name: 'Fish Oil',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 22,
     category: 'Nutrition',
@@ -539,7 +497,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n4',
     name: 'Vitamin C',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 18,
     category: 'Nutrition',
@@ -551,7 +509,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n5',
     name: 'Energy Drink',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 5,
     category: 'Nutrition',
@@ -563,7 +521,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n6',
     name: 'Protein Bar',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 3,
     category: 'Nutrition',
@@ -575,7 +533,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n7',
     name: 'Creatine',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 35,
     category: 'Nutrition',
@@ -587,7 +545,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n8',
     name: 'BCAA',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 28,
     category: 'Nutrition',
@@ -599,7 +557,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n9',
     name: 'Pre Workout',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 40,
     category: 'Nutrition',
@@ -611,7 +569,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'n10',
     name: 'Mass Gainer',
-    image: productImages['Nutrition']!,
+    image: productImages[0],
     images: productGalleryImages['Nutrition']!,
     price: 55,
     category: 'Nutrition',
@@ -626,7 +584,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy1',
     name: 'Dumbbells',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 50,
     category: 'Gym Products',
@@ -638,7 +596,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy2',
     name: 'Yoga Mat',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 20,
     category: 'Gym Products',
@@ -650,7 +608,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy3',
     name: 'Skipping Rope',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 12,
     category: 'Gym Products',
@@ -662,7 +620,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy4',
     name: 'Resistance Bands',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 18,
     category: 'Gym Products',
@@ -674,7 +632,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy5',
     name: 'Kettlebell',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 35,
     category: 'Gym Products',
@@ -686,7 +644,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy6',
     name: 'Foam Roller',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 22,
     category: 'Gym Products',
@@ -698,7 +656,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy7',
     name: 'Gym Gloves',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 15,
     category: 'Gym Products',
@@ -710,7 +668,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy8',
     name: 'Pull Up Bar',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 40,
     category: 'Gym Products',
@@ -722,7 +680,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy9',
     name: 'Exercise Bike',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 300,
     category: 'Gym Products',
@@ -734,7 +692,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gy10',
     name: 'Treadmill',
-    image: productImages['Gym Products']!,
+    image: productImages[0],
     images: productGalleryImages['Gym Products']!,
     price: 900,
     category: 'Gym Products',
@@ -749,7 +707,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't1',
     name: 'Travel Backpack',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 70,
     category: 'Travel',
@@ -761,7 +719,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't2',
     name: 'Suitcase',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 120,
     category: 'Travel',
@@ -773,7 +731,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't3',
     name: 'Neck Pillow',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 15,
     category: 'Travel',
@@ -785,7 +743,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't4',
     name: 'Travel Adapter',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 20,
     category: 'Travel',
@@ -797,7 +755,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't5',
     name: 'Passport Holder',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 12,
     category: 'Travel',
@@ -809,7 +767,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't6',
     name: 'Travel Bottle Set',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 10,
     category: 'Travel',
@@ -821,7 +779,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't7',
     name: 'Luggage Tag',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 6,
     category: 'Travel',
@@ -833,7 +791,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't8',
     name: 'Travel Organizer',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 14,
     category: 'Travel',
@@ -845,7 +803,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't9',
     name: 'Portable Charger',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 35,
     category: 'Travel',
@@ -857,7 +815,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 't10',
     name: 'Sleeping Mask',
-    image: productImages['Travel']!,
+    image: productImages[0],
     images: productGalleryImages['Travel']!,
     price: 8,
     category: 'Travel',
@@ -872,7 +830,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j1',
     name: 'Gold Necklace',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 450,
     category: 'Jewellery',
@@ -884,7 +842,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j2',
     name: 'Diamond Ring',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 900,
     category: 'Jewellery',
@@ -896,7 +854,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j3',
     name: 'Silver Bracelet',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 120,
     category: 'Jewellery',
@@ -908,7 +866,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j4',
     name: 'Pearl Earrings',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 150,
     category: 'Jewellery',
@@ -920,7 +878,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j5',
     name: 'Gold Bangles',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 380,
     category: 'Jewellery',
@@ -932,7 +890,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j6',
     name: 'Diamond Pendant',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 500,
     category: 'Jewellery',
@@ -944,7 +902,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j7',
     name: 'Silver Ring',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 80,
     category: 'Jewellery',
@@ -956,7 +914,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j8',
     name: 'Gemstone Necklace',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 220,
     category: 'Jewellery',
@@ -968,7 +926,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j9',
     name: 'Charm Bracelet',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 95,
     category: 'Jewellery',
@@ -980,7 +938,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'j10',
     name: 'Platinum Ring',
-    image: productImages['Jewellery']!,
+    image: productImages[0],
     images: productGalleryImages['Jewellery']!,
     price: 750,
     category: 'Jewellery',
@@ -995,7 +953,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm1',
     name: 'Gaming Console',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 499,
     category: 'Games',
@@ -1007,7 +965,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm2',
     name: 'Gaming Controller',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 70,
     category: 'Games',
@@ -1019,7 +977,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm3',
     name: 'VR Headset',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 350,
     category: 'Games',
@@ -1031,7 +989,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm4',
     name: 'Gaming Chair',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 250,
     category: 'Games',
@@ -1043,7 +1001,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm5',
     name: 'Gaming Headset',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 120,
     category: 'Games',
@@ -1055,7 +1013,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm6',
     name: 'Racing Wheel',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 200,
     category: 'Games',
@@ -1067,7 +1025,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm7',
     name: 'Gamepad',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 45,
     category: 'Games',
@@ -1079,7 +1037,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm8',
     name: 'Arcade Stick',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 150,
     category: 'Games',
@@ -1091,7 +1049,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm9',
     name: 'Gaming Keyboard',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 110,
     category: 'Games',
@@ -1103,7 +1061,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'gm10',
     name: 'Gaming Mouse',
-    image: productImages['Games']!,
+    image: productImages[0],
     images: productGalleryImages['Games']!,
     price: 80,
     category: 'Games',
@@ -1118,7 +1076,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb1',
     name: 'Flutter Development Guide',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 15,
     category: 'E-books',
@@ -1130,7 +1088,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb2',
     name: 'Learn Dart Programming',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 12,
     category: 'E-books',
@@ -1142,7 +1100,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb3',
     name: 'Startup Fundamentals',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 18,
     category: 'E-books',
@@ -1154,7 +1112,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb4',
     name: 'Digital Marketing Secrets',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 14,
     category: 'E-books',
@@ -1166,7 +1124,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb5',
     name: 'Fitness and Nutrition',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 10,
     category: 'E-books',
@@ -1178,7 +1136,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb6',
     name: 'Travel the World',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 16,
     category: 'E-books',
@@ -1190,7 +1148,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb7',
     name: 'Mindfulness Meditation',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 11,
     category: 'E-books',
@@ -1202,7 +1160,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb8',
     name: 'Financial Freedom',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 13,
     category: 'E-books',
@@ -1214,7 +1172,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb9',
     name: 'Cooking Masterclass',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 9,
     category: 'E-books',
@@ -1226,7 +1184,7 @@ final List<Product> dummyProducts = [
   Product(
     id: 'eb10',
     name: 'AI for Beginners',
-    image: productImages['E-books']!,
+    image: productImages[0],
     images: productGalleryImages['E-books']!,
     price: 20,
     category: 'E-books',
