@@ -9,7 +9,8 @@ class OrderCardWidget extends StatelessWidget {
   final int index;
   final Animation<double> animation;
   final VoidCallback onToggle;
-  final dynamic statusConfig; // your cfg object
+  final VoidCallback? onReturn;
+  final dynamic statusConfig;
 
   const OrderCardWidget({
     super.key,
@@ -18,6 +19,7 @@ class OrderCardWidget extends StatelessWidget {
     required this.animation,
     required this.onToggle,
     required this.statusConfig,
+    this.onReturn,
   });
 
   @override
@@ -182,8 +184,7 @@ class OrderCardWidget extends StatelessWidget {
                           child: _infoTile(
                             icon: Icons.fastfood_rounded,
                             label: "Items",
-                            value:
-                                "${(order["items"] as List).length} items",
+                            value: "${(order["items"] as List).length} items",
                           ),
                         ),
                       ],
@@ -253,8 +254,7 @@ class OrderCardWidget extends StatelessWidget {
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.replay_rounded,
-                                    color: Colors.white),
+                                Icon(Icons.replay_rounded, color: Colors.white),
                                 SizedBox(width: 6),
                                 Text(
                                   "Reorder",
@@ -285,7 +285,9 @@ class OrderCardWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _sectionLabel(
-                                  Icons.shopping_bag_rounded, "Items Ordered"),
+                                Icons.shopping_bag_rounded,
+                                "Items Ordered",
+                              ),
                               SizedBox(height: Dimensions.height10),
 
                               ...List.generate(
@@ -295,8 +297,10 @@ class OrderCardWidget extends StatelessWidget {
 
                               SizedBox(height: Dimensions.height10),
 
-                              _sectionLabel(Icons.location_on_rounded,
-                                  "Delivery Address"),
+                              _sectionLabel(
+                                Icons.location_on_rounded,
+                                "Delivery Address",
+                              ),
                               SizedBox(height: Dimensions.height10),
 
                               Text(order["address"]),
@@ -306,6 +310,46 @@ class OrderCardWidget extends StatelessWidget {
                       ],
                     ),
                   ),
+
+                  if (order["status"] == "Delivered") ...[
+                    SizedBox(height: Dimensions.height10),
+                    GestureDetector(
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        onReturn?.call();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.red.shade400,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.assignment_return_rounded,
+                              color: Colors.red.shade400,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              "Return Order",
+                              style: TextStyle(
+                                color: Colors.red.shade400,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -346,10 +390,7 @@ class OrderCardWidget extends StatelessWidget {
       children: [
         Icon(icon, size: 15, color: const Color(0xFF059669)),
         const SizedBox(width: 6),
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w700),
-        ),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
       ],
     );
   }

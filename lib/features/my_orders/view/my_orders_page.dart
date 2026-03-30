@@ -82,6 +82,43 @@ class _MyOrdersPageState extends State<MyOrdersPage>
     HapticFeedback.selectionClick();
   }
 
+  void _confirmReturn(int index) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimensions.radius15),
+        ),
+        title: const Text("Return Order"),
+        content: Text(
+          "Are you sure you want to return order ${orders[index]["orderId"]}?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              setState(() => orders[index]["status"] = "Returned");
+            },
+            child: Text(
+              "Return",
+              style: TextStyle(
+                color: Colors.red.shade400,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Status config
   StatusConfig _getStatusConfig(String status) {
     switch (status) {
@@ -105,6 +142,13 @@ class _MyOrdersPageState extends State<MyOrdersPage>
           bg: const Color(0xFFFEE2E2),
           icon: Icons.cancel_rounded,
           label: "Cancelled",
+        );
+      case "Returned":
+        return StatusConfig(
+          color: const Color(0xFF8B5CF6),
+          bg: const Color(0xFFEDE9FE),
+          icon: Icons.assignment_return_rounded,
+          label: "Returned",
         );
       default:
         return StatusConfig(
@@ -140,6 +184,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                   animation: _animations[index],
                   onToggle: () => _toggleExpand(index),
                   statusConfig: _getStatusConfig(orders[index]["status"]),
+                  onReturn: orders[index]["status"] == "Delivered"
+                      ? () => _confirmReturn(index)
+                      : null,
                 ),
                 childCount: orders.length,
               ),
