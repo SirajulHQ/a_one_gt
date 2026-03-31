@@ -3,7 +3,7 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/saved_address_page.dart';
 import 'package:a_one_gt/features/my_orders/view/my_orders_page.dart';
 import 'package:a_one_gt/features/profile/view/edit_profile_page.dart';
-import 'package:a_one_gt/features/profile/view/help_and_support_page.dart';
+import 'package:a_one_gt/features/help_and_support/view/help_and_support_page.dart';
 import 'package:a_one_gt/features/settings/view/settings_page.dart';
 import 'package:a_one_gt/features/profile/widget/logout_dialog_widget.dart';
 import 'package:flutter/material.dart';
