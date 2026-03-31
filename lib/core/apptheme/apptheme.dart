@@ -12,7 +12,7 @@ class Appcolors {
     10,
     72,
     36,
-  ).withOpacity(0.78);
+  ).withValues(alpha: 0.78);
 }
 
 /// ─── STATUS CONFIG MODEL ──────────────────────────────────────────────────

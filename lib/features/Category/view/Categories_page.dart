@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/category/widgets/exit_dialog_widget.dart';
 import 'package:a_one_gt/features/main_navigation/view/main_navigation_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -34,22 +35,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
     "E-boooks",
   ];
   Future<bool> _showExitConfirmation() async {
-    return await showDialog(
+    return await showDialog<bool>(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Exit App'),
-            content: const Text('Are you sure you want to exit the app?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Exit'),
-              ),
-            ],
-          ),
+          barrierDismissible: false,
+          builder: (context) => const ExitDialogWidget(),
         ) ??
         false;
   }
