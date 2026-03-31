@@ -3,6 +3,7 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/address/view/add_edit_address_page.dart';
 import 'package:a_one_gt/features/address/view/current_location_picker_page.dart';
 import 'package:a_one_gt/features/address/widgets/address_card_widget.dart';
+import 'package:a_one_gt/features/address/widgets/delete_address_dialog_widget.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,41 +111,21 @@ class _SavedAddressesPageState extends State<SavedAddressesPage> {
     HapticFeedback.lightImpact();
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Dimensions.radius15),
-        ),
-        title: const Text("Delete Address"),
-        content: const Text("Are you sure you want to delete this address?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.grey.shade600),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              setState(() {
-                if (_selectedIndex == dynamicIndex) _selectedIndex = 0;
-                _dynamicAddresses.removeAt(dynamicIndex);
-              });
-              toastification.show(
-                context: context,
-                title: const Text("Address deleted"),
-                autoCloseDuration: const Duration(seconds: 2),
-                type: ToastificationType.error,
-                style: ToastificationStyle.minimal,
-              );
-            },
-            child: const Text(
-              "Delete",
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+      builder: (ctx) => DeleteAddressDialogWidget(
+        onDelete: () {
+          Navigator.pop(ctx);
+          setState(() {
+            if (_selectedIndex == dynamicIndex) _selectedIndex = 0;
+            _dynamicAddresses.removeAt(dynamicIndex);
+          });
+          toastification.show(
+            context: context,
+            title: const Text("Address deleted"),
+            autoCloseDuration: const Duration(seconds: 2),
+            type: ToastificationType.error,
+            style: ToastificationStyle.minimal,
+          );
+        },
       ),
     );
   }

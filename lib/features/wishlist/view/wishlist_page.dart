@@ -27,7 +27,7 @@ class WishlistPage extends ConsumerWidget {
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       final product = wishlistItems[index];
-                      return ProductCard(
+                      return ProductCardWidget(
                         product: product,
                         showWishlistRemove: true,
                         onTap: () {

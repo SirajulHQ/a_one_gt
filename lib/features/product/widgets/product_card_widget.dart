@@ -3,19 +3,19 @@ import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/cart/controller/cart_controller.dart';
 import 'package:a_one_gt/features/widgets/like_button_widget.dart';
-import 'package:a_one_gt/features/wishlist/controller/wishlist_provider.dart';
+import 'package:a_one_gt/features/wishlist/widgets/wishlist_remove_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' hide Consumer;
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
-class ProductCard extends ConsumerWidget {
+class ProductCardWidget extends ConsumerWidget {
   final Product product;
   final VoidCallback onTap;
   final bool showWishlistRemove;
 
-  const ProductCard({
+  const ProductCardWidget({
     super.key,
     required this.product,
     required this.onTap,
@@ -68,7 +68,7 @@ class ProductCard extends ConsumerWidget {
                         top: 4,
                         right: 4,
                         child: showWishlistRemove
-                            ? _WishlistRemoveButton(product: product, ref: ref)
+                            ? WishlistRemoveButtonWidget(product: product)
                             : LikeButtonWidget(product: product),
                       ),
                     ],
@@ -132,61 +132,6 @@ class ProductCard extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _WishlistRemoveButton extends StatelessWidget {
-  final Product product;
-  final WidgetRef ref;
-
-  const _WishlistRemoveButton({required this.product, required this.ref});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (details) {
-        final overlay =
-            Overlay.of(context).context.findRenderObject() as RenderBox;
-        final position = RelativeRect.fromRect(
-          details.globalPosition & const Size(1, 1),
-          Offset.zero & overlay.size,
-        );
-        showMenu(
-          context: context,
-          position: position,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          items: [
-            PopupMenuItem(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                ref.read(wishlistProvider.notifier).toggle(product);
-              },
-              child: const Row(
-                children: [
-                  Icon(
-                    Icons.favorite_border,
-                    size: 18,
-                    color: Colors.redAccent,
-                  ),
-                  SizedBox(width: 8),
-                  Text("Remove from Wishlist"),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.85),
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(Icons.more_vert, size: 16, color: Colors.grey),
       ),
     );
   }

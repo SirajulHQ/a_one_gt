@@ -151,7 +151,7 @@ class _ProductHomePageState extends State<ProductHomePage> {
               delegate: SliverChildBuilderDelegate((context, index) {
                 final product = displayedProducts[index];
 
-                return ProductCard(
+                return ProductCardWidget(
                   product: product,
                   onTap: () {
                     HapticFeedback.lightImpact();
