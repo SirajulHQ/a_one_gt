@@ -10,6 +10,7 @@ class OrderCardWidget extends StatelessWidget {
   final Animation<double> animation;
   final VoidCallback onToggle;
   final VoidCallback? onReturn;
+  final VoidCallback? onReorder;
   final dynamic statusConfig;
 
   const OrderCardWidget({
@@ -20,6 +21,7 @@ class OrderCardWidget extends StatelessWidget {
     required this.onToggle,
     required this.statusConfig,
     this.onReturn,
+    this.onReorder,
   });
 
   @override
@@ -244,7 +246,10 @@ class OrderCardWidget extends StatelessWidget {
 
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => HapticFeedback.mediumImpact(),
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            onReorder?.call();
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 13),
                             decoration: BoxDecoration(

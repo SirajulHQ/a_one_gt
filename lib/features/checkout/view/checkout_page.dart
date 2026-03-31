@@ -10,8 +10,9 @@ import 'package:toastification/toastification.dart';
 
 class CheckoutPage extends StatefulWidget {
   final String category;
+  final List<Map<String, dynamic>>? reorderItems;
 
-  const CheckoutPage({super.key, required this.category});
+  const CheckoutPage({super.key, required this.category, this.reorderItems});
 
   @override
   State<CheckoutPage> createState() => _CheckoutPageState();
@@ -21,6 +22,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
   int selectedPayment = 0;
 
   double _subtotal(List items) {
+    if (widget.reorderItems != null) {
+      return widget.reorderItems!.fold(
+        0,
+        (sum, item) => sum + (item["price"] as num),
+      );
+    }
     return items.fold(
       0,
       (sum, item) => sum + (item.product.price * item.quantity),
@@ -109,26 +116,39 @@ class _CheckoutPageState extends State<CheckoutPage> {
               child: Column(
                 children: [
                   /// Item List
-                  ...items.map((item) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "${item.product.name} x${item.quantity}",
-                              style: const TextStyle(fontSize: 13),
-                            ),
+                  ...(widget.reorderItems != null
+                          ? widget.reorderItems!
+                          : items
+                                .map(
+                                  (item) => {
+                                    "name":
+                                        "${item.product.name} x${item.quantity}",
+                                    "price": item.product.price * item.quantity,
+                                  },
+                                )
+                                .toList())
+                      .map((item) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item["name"] as String,
+                                  style: const TextStyle(fontSize: 13),
+                                ),
+                              ),
+                              Text(
+                                "AED ${(item["price"] as num).toStringAsFixed(2)}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "AED ${(item.product.price * item.quantity).toStringAsFixed(2)}",
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                        );
+                      }),
 
                   const Divider(height: 24),
 

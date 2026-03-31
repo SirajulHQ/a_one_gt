@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/checkout/view/checkout_page.dart';
 import 'package:a_one_gt/features/my_orders/widgets/order_card_widget.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -301,6 +302,20 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                   onReturn: orders[index]["status"] == "Delivered"
                       ? () => _confirmReturn(index)
                       : null,
+                  onReorder: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CheckoutPage(
+                          category: "reorder",
+                          reorderItems: List<Map<String, dynamic>>.from(
+                            orders[index]["items"],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 childCount: orders.length,
               ),
