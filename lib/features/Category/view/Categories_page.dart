@@ -33,145 +33,176 @@ class _CategoriesPageState extends State<CategoriesPage> {
     "Games",
     "E-boooks",
   ];
+  Future<bool> _showExitConfirmation() async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Exit App'),
+            content: const Text('Are you sure you want to exit the app?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Exit'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Appcolors.background,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 + 5),
-          child: Column(
-            children: [
-              SizedBox(height: Dimensions.height10),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        final shouldPop = await _showExitConfirmation();
+        if (shouldPop && context.mounted) {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Appcolors.background,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 + 5),
+            child: Column(
+              children: [
+                SizedBox(height: Dimensions.height10),
 
-              /// Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    "assets/logos/a_one_logo.png",
-                    height: Dimensions.height45 - 10,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        // height: Dimensions.height45 - 10,
-                        // width: Dimensions.height45 * 2,
-                        color: Colors.grey.shade300,
-                        child: const Icon(Icons.image_not_supported),
-                      );
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isGrid = !isGrid;
-                      });
-                    },
-                    child: Container(
-                      height: Dimensions.height45,
-                      width: Dimensions.height45,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(
-                          Dimensions.radius20,
-                        ),
-                      ),
-                      child: Icon(
-                        isGrid ? Icons.menu : Icons.grid_view,
-                        size: Dimensions.iconSize24,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: Dimensions.height10),
-
-              /// Title
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Shop by Categories",
-                  style: TextStyle(
-                    fontSize: Dimensions.font20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: Dimensions.height15),
-
-              /// Carousel
-              Column(
-                children: [
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: Dimensions.height30 * 5,
-                      viewportFraction: 1,
-                      autoPlay: true,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          currentIndex = index;
-                        });
+                /// Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      "assets/logos/a_one_logo.png",
+                      height: Dimensions.height45 - 10,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          // height: Dimensions.height45 - 10,
+                          // width: Dimensions.height45 * 2,
+                          color: Colors.grey.shade300,
+                          child: const Icon(Icons.image_not_supported),
+                        );
                       },
                     ),
-                    items: banners.map((image) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                          Dimensions.radius20 - 10,
-                        ),
-                        child: Image.asset(
-                          image,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: double.infinity,
-                              color: Colors.grey.shade300,
-                              child: const Icon(
-                                Icons.image_not_supported,
-                                size: 50,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-
-                  SizedBox(height: Dimensions.height10),
-
-                  /// Indicator
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: banners.asMap().entries.map((entry) {
-                      return Container(
-                        width: currentIndex == entry.key
-                            ? Dimensions.width20
-                            : Dimensions.width10,
-                        height: Dimensions.height10 / 2,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: Dimensions.width10 / 2,
-                        ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isGrid = !isGrid;
+                        });
+                      },
+                      child: Container(
+                        height: Dimensions.height45,
+                        width: Dimensions.height45,
                         decoration: BoxDecoration(
-                          color: currentIndex == entry.key
-                              ? Colors.green
-                              : Colors.grey.shade400,
+                          color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(
                             Dimensions.radius20,
                           ),
                         ),
-                      );
-                    }).toList(),
+                        child: Icon(
+                          isGrid ? Icons.menu : Icons.grid_view,
+                          size: Dimensions.iconSize24,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: Dimensions.height10),
+
+                /// Title
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Shop by Categories",
+                    style: TextStyle(
+                      fontSize: Dimensions.font20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ],
-              ),
+                ),
 
-              SizedBox(height: Dimensions.height20),
+                SizedBox(height: Dimensions.height15),
 
-              /// Categories
-              Expanded(child: isGrid ? gridView() : listView()),
-            ],
+                /// Carousel
+                Column(
+                  children: [
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: Dimensions.height30 * 5,
+                        viewportFraction: 1,
+                        autoPlay: true,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                      ),
+                      items: banners.map((image) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            Dimensions.radius20 - 10,
+                          ),
+                          child: Image.asset(
+                            image,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: double.infinity,
+                                color: Colors.grey.shade300,
+                                child: const Icon(
+                                  Icons.image_not_supported,
+                                  size: 50,
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
+                    SizedBox(height: Dimensions.height10),
+
+                    /// Indicator
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: banners.asMap().entries.map((entry) {
+                        return Container(
+                          width: currentIndex == entry.key
+                              ? Dimensions.width20
+                              : Dimensions.width10,
+                          height: Dimensions.height10 / 2,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: Dimensions.width10 / 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: currentIndex == entry.key
+                                ? Colors.green
+                                : Colors.grey.shade400,
+                            borderRadius: BorderRadius.circular(
+                              Dimensions.radius20,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: Dimensions.height20),
+
+                /// Categories
+                Expanded(child: isGrid ? gridView() : listView()),
+              ],
+            ),
           ),
         ),
       ),

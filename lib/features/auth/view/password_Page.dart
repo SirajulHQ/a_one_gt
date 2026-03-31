@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/category/view/Categories_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -85,7 +86,11 @@ class PasswordPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     HapticFeedback.lightImpact();
-                    Navigator.pushNamed(context, '/categories');
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CategoriesPage()),
+                      (route) => false,
+                    );
                   },
                   child: const Text(
                     "Continue",
