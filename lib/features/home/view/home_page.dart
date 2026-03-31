@@ -286,6 +286,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          SliverToBoxAdapter(child: SizedBox(height: Dimensions.height45 * 2)),
         ],
       ),
     );

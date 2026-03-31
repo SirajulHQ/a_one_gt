@@ -154,7 +154,7 @@ class HelpAndSupportPage extends StatelessWidget {
 
   /// Open WhatsApp
   Future<void> _openWhatsApp() async {
-    const phoneNumber = "919605455758"; 
+    const phoneNumber = "919605455758";
     const message = "Hello, I need support with A One GT app.";
 
     // Try WhatsApp app first with whatsapp:// scheme
@@ -234,34 +234,34 @@ class HelpAndSupportPage extends StatelessWidget {
   Widget _buildContactRow(IconData icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: GestureDetector(
-        onTap: () {
-          HapticFeedback.selectionClick();
-          _handleContactTap(icon, text);
-        },
-        child: Row(
-          children: [
-            Icon(icon, color: Appcolors.primaryGreen),
-            const SizedBox(width: 10),
-            Text(text),
-          ],
-        ),
+      // child: GestureDetector(
+      //   onTap: () {
+      //     HapticFeedback.selectionClick();
+      //     _handleContactTap(icon, text);
+      //   },
+      child: Row(
+        children: [
+          Icon(icon, color: Appcolors.primaryGreen),
+          const SizedBox(width: 10),
+          Text(text),
+        ],
       ),
+      // ),
     );
   }
 
   /// Handle Contact Tap
-  void _handleContactTap(IconData icon, String text) async {
-    if (icon == Icons.phone) {
-      final phoneUrl = Uri.parse("tel:$text");
-      if (await canLaunchUrl(phoneUrl)) {
-        await launchUrl(phoneUrl);
-      }
-    } else if (icon == Icons.email) {
-      final emailUrl = Uri.parse("mailto:$text");
-      if (await canLaunchUrl(emailUrl)) {
-        await launchUrl(emailUrl);
-      }
-    }
-  }
+  // void _handleContactTap(IconData icon, String text) async {
+  //   if (icon == Icons.phone) {
+  //     final phoneUrl = Uri.parse("tel:$text");
+  //     if (await canLaunchUrl(phoneUrl)) {
+  //       await launchUrl(phoneUrl);
+  //     }
+  //   } else if (icon == Icons.email) {
+  //     final emailUrl = Uri.parse("mailto:$text");
+  //     if (await canLaunchUrl(emailUrl)) {
+  //       await launchUrl(emailUrl);
+  //     }
+  //   }
+  // }
 }
