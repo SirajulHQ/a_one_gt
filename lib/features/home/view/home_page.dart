@@ -1,7 +1,7 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
-import 'package:a_one_gt/features/product/view/product_home_page.dart';
+import 'package:a_one_gt/features/home/view/product_home_page.dart';
 import 'package:a_one_gt/features/widgets/custom_sliver_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
