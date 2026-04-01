@@ -83,21 +83,21 @@ class _ProductHomePageState extends State<ProductHomePage> {
           CustomSliverAppBar(
             title: widget.subCategory,
             subtitle: "${displayedProducts.length} products available",
-            action: Container(
-              margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.18),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.notifications_none,
-                  color: Colors.white,
-                  size: 22,
-                ),
-                onPressed: () {},
-              ),
-            ),
+            // action: Container(
+            //   margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white.withOpacity(0.18),
+            //     borderRadius: BorderRadius.circular(12),
+            //   ),
+            //   child: IconButton(
+            //     icon: const Icon(
+            //       Icons.notifications_none,
+            //       color: Colors.white,
+            //       size: 22,
+            //     ),
+            //     onPressed: () {},
+            //   ),
+            // ),
           ),
 
           /// ── Search ─────────────────────────────────
