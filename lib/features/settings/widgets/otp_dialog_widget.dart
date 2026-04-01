@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/auth/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -108,6 +109,11 @@ class _OtpDialogWidgetState extends State<OtpDialogWidget> {
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    (route) => false,
+                  );
                 },
                 child: Text(
                   confirmLabel,
