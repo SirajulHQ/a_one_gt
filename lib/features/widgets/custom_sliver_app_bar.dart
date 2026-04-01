@@ -128,14 +128,19 @@ class CustomSliverAppBar extends StatelessWidget {
                             letterSpacing: -0.5,
                           ),
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          subtitle,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.75),
-                            fontSize: 13,
+                        if (collapsePercent < 0.1) ...[
+                          // const SizedBox(height: 2),
+                          Opacity(
+                            opacity: (1 - collapsePercent * 10).clamp(0.0, 1.0),
+                            child: Text(
+                              subtitle,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.75),
+                                fontSize: 13,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ],
                     ),
                   ),
