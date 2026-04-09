@@ -128,9 +128,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                       height: Dimensions.height45 + 20,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.white.withValues(alpha: 0.15),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.25),
+                          color: Colors.white.withValues(alpha: 0.25),
                           width: 2,
                         ),
                       ),
@@ -154,7 +154,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                       "Are you sure you want to return order ${orders[index]["orderId"]}?",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         fontSize: Dimensions.font16 - 2,
                       ),
                     ),

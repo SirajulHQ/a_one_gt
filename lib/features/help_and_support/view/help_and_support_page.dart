@@ -27,7 +27,7 @@ class HelpAndSupportPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -53,7 +53,7 @@ class HelpAndSupportPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -88,7 +88,7 @@ class HelpAndSupportPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -118,7 +118,7 @@ class HelpAndSupportPage extends StatelessWidget {
         height: Dimensions.height30,
         width: Dimensions.height30,
         decoration: BoxDecoration(
-          color: Appcolors.primaryGreen.withOpacity(.1),
+          color: Appcolors.primaryGreen.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, color: Appcolors.primaryGreen),

@@ -50,7 +50,7 @@ class ProfilePage extends StatelessWidget {
                       height: Dimensions.height45 * 3,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(.08),
+                        color: Colors.white.withValues(alpha: 0.08),
                       ),
                     ),
                   ),
@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                       height: Dimensions.height45,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(.06),
+                        color: Colors.white.withValues(alpha: 0.06),
                       ),
                     ),
                   ),
@@ -80,7 +80,7 @@ class ProfilePage extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 3),
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                         ),
                         child: ClipOval(
                           child: Icon(
@@ -128,7 +128,7 @@ class ProfilePage extends StatelessWidget {
                       Text(
                         "sirajul@gmail.com",
                         style: TextStyle(
-                          color: Colors.white.withOpacity(.75),
+                          color: Colors.white.withValues(alpha: 0.75),
                           fontSize: Dimensions.font16,
                         ),
                       ),
@@ -233,7 +233,7 @@ class ProfilePage extends StatelessWidget {
                         /// ───────────────── Logout Dialog ─────────────────
                         showDialog(
                           context: context,
-                          barrierColor: Colors.black.withOpacity(0.5),
+                          barrierColor: Colors.black.withValues(alpha: 0.5),
                           builder: (context) {
                             return const LogoutDialogWidget();
                           },
@@ -272,7 +272,7 @@ class ProfilePage extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimensions.radius15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: Dimensions.radius15,
             offset: const Offset(0, 4),
           ),
@@ -283,7 +283,7 @@ class ProfilePage extends StatelessWidget {
           height: Dimensions.height30,
           width: Dimensions.height30,
           decoration: BoxDecoration(
-            color: Appcolors.primaryGreen.withOpacity(.1),
+            color: Appcolors.primaryGreen.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(Dimensions.radius15),
           ),
           child: Icon(

@@ -135,7 +135,7 @@ class CustomSliverAppBar extends StatelessWidget {
                             child: Text(
                               subtitle,
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.75),
+                                color: Colors.white.withValues(alpha: .75),
                                 fontSize: 13,
                               ),
                             ),

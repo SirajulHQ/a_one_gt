@@ -99,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -128,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
         height: 40,
         width: 40,
         decoration: BoxDecoration(
-          color: Appcolors.primaryGreen.withOpacity(.1),
+          color: Appcolors.primaryGreen.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, color: Appcolors.primaryGreen),
@@ -136,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
       trailing: Switch(
         value: value,
-        activeColor: Appcolors.primaryGreen,
+        activeThumbColor: Appcolors.primaryGreen,
         onChanged: onChanged,
       ),
     );
@@ -153,7 +153,7 @@ class _SettingsPageState extends State<SettingsPage> {
         height: 40,
         width: 40,
         decoration: BoxDecoration(
-          color: Appcolors.primaryGreen.withOpacity(.1),
+          color: Appcolors.primaryGreen.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, color: Appcolors.primaryGreen),
