@@ -105,6 +105,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   _paymentTile(Icons.money_outlined, "Card on Delivery", 1),
                   _paymentTile(Icons.money_outlined, "Cash on Delivery", 2),
+                  _paymentTile(Icons.money_outlined, "Pay by Link", 3),
                 ],
               ),
             ),
