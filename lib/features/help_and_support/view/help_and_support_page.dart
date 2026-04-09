@@ -1,5 +1,6 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
+import 'package:a_one_gt/features/help_and_support/view/chat_bot_page.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:a_one_gt/features/widgets/section_tile.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,18 @@ class HelpAndSupportPage extends StatelessWidget {
                 children: [
                   const SectionTitle(title: "Support Options"),
                   const SizedBox(height: 20),
-                  _buildTile(Icons.chat_bubble_outline, "Live Chat"),
-                  _buildTile(Icons.local_phone_outlined, "Call Support"),
-                  _buildTile(Icons.email_outlined, "Email Support"),
+                  _buildTile(
+                    Icons.smart_toy_outlined,
+                    "Chat with Bot",
+                    context,
+                  ),
+                  _buildTile(Icons.chat_bubble_outline, "Live Chat", context),
+                  _buildTile(
+                    Icons.local_phone_outlined,
+                    "Call Support",
+                    context,
+                  ),
+                  _buildTile(Icons.email_outlined, "Email Support", context),
                 ],
               ),
             ),
@@ -111,7 +121,7 @@ class HelpAndSupportPage extends StatelessWidget {
   }
 
   /// Support Tile
-  Widget _buildTile(IconData icon, String title) {
+  Widget _buildTile(IconData icon, String title, BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Container(
@@ -127,15 +137,18 @@ class HelpAndSupportPage extends StatelessWidget {
       trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
       onTap: () {
         HapticFeedback.selectionClick();
-        _handleSupportOption(title);
+        _handleSupportOption(title, context);
       },
     );
   }
 
   /// Handle Support Option Navigation
-  void _handleSupportOption(String option) async {
+  void _handleSupportOption(String option, BuildContext context) async {
     try {
       switch (option) {
+        case "Chat with Bot":
+          _openChatBot(context);
+          break;
         case "Live Chat":
           await _openWhatsApp();
           break;
@@ -150,6 +163,14 @@ class HelpAndSupportPage extends StatelessWidget {
       // Handle error - could show a snackbar or dialog
       debugPrint("Error opening $option: $e");
     }
+  }
+
+  /// Open Chat Bot
+  void _openChatBot(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ChatBotPage()),
+    );
   }
 
   /// Open WhatsApp
