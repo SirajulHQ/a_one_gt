@@ -1,6 +1,8 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/notifications/data/notification_dummy_data.dart';
 import 'package:a_one_gt/features/notifications/model/notification_model.dart';
+import 'package:a_one_gt/features/notifications/services/notification_service.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,24 +17,60 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPageState extends State<NotificationsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final NotificationService _notificationService = NotificationService();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    // Listen to notification service changes
+    _notificationService.addListener(_onNotificationUpdate);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _notificationService.removeListener(_onNotificationUpdate);
     super.dispose();
+  }
+
+  void _onNotificationUpdate() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Appcolors.background,
-      appBar: const CustomAppBar(title: "Notifications"),
+      appBar: CustomAppBar(
+        title: "Notifications",
+        actions: [
+          if (_notificationService.unreadCount > 0) ...[
+            GestureDetector(
+              onTap: _markAllAsRead,
+              child: Container(
+                margin: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Text(
+                  "Mark all read",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: Dimensions.width10),
+          ],
+        ],
+      ),
       body: Column(
         children: [
           // Tab Bar
@@ -63,7 +101,7 @@ class _NotificationsPageState extends State<NotificationsPage>
                 fontWeight: FontWeight.w500,
                 fontSize: 13,
               ),
-              overlayColor: MaterialStateProperty.all(
+              overlayColor: WidgetStateProperty.all(
                 Colors.transparent,
               ), // remove splash
               splashFactory: NoSplash.splashFactory, // extra safety
@@ -91,23 +129,48 @@ class _NotificationsPageState extends State<NotificationsPage>
     );
   }
 
+  void _markAllAsRead() {
+    _notificationService.markAllAsRead();
+    HapticFeedback.mediumImpact();
+  }
+
+  void _markAsRead(String notificationId) {
+    _notificationService.markAsRead(notificationId);
+    HapticFeedback.selectionClick();
+  }
+
+  List<NotificationModel> get sortedNotifications =>
+      _notificationService.sortedNotifications;
+
   Widget _buildAllNotifications() {
+    final sortedNotifs = sortedNotifications;
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: dummyNotifications.length,
+      itemCount: sortedNotifs.length,
       itemBuilder: (context, index) {
-        final notification = dummyNotifications[index];
-        return _buildNotificationCard(
-          icon: notification.type == NotificationType.offer
-              ? Icons.local_offer_outlined
-              : Icons.stars_outlined,
-          iconColor: notification.type == NotificationType.offer
-              ? Colors.orange
-              : Appcolors.primaryGreen,
-          title: notification.title,
-          subtitle: notification.subtitle,
-          time: notification.time,
-          isOffer: notification.type == NotificationType.offer,
+        final notification = sortedNotifs[index];
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          child: GestureDetector(
+            onTap: () => _markAsRead(notification.id),
+            child: _buildNotificationCard(
+              icon: notification.type == NotificationType.offer
+                  ? Icons.local_offer_outlined
+                  : notification.type == NotificationType.points
+                  ? Icons.stars_outlined
+                  : Icons.notifications_outlined,
+              iconColor: notification.type == NotificationType.offer
+                  ? Colors.orange
+                  : notification.type == NotificationType.points
+                  ? Appcolors.primaryGreen
+                  : Colors.blue,
+              title: notification.title,
+              subtitle: notification.subtitle,
+              time: notification.time,
+              isOffer: notification.type == NotificationType.offer,
+              isRead: notification.isRead,
+            ),
+          ),
         );
       },
     );
@@ -228,7 +291,7 @@ class _NotificationsPageState extends State<NotificationsPage>
               time: pointsHistory.time,
               isEarned: pointsHistory.isEarned,
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -241,13 +304,17 @@ class _NotificationsPageState extends State<NotificationsPage>
     required String subtitle,
     required String time,
     required bool isOffer,
+    bool isRead = true,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isRead ? Colors.white : Colors.blue.shade50,
         borderRadius: BorderRadius.circular(16),
+        border: isRead
+            ? null
+            : Border.all(color: Colors.blue.shade200, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -258,14 +325,32 @@ class _NotificationsPageState extends State<NotificationsPage>
       ),
       child: Row(
         children: [
-          Container(
-            height: 48,
-            width: 48,
-            decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: iconColor, size: 24),
+          Stack(
+            children: [
+              Container(
+                height: 48,
+                width: 48,
+                decoration: BoxDecoration(
+                  color: iconColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: iconColor, size: 24),
+              ),
+              if (!isRead)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade600,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -274,20 +359,53 @@ class _NotificationsPageState extends State<NotificationsPage>
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                  style: TextStyle(
+                    fontWeight: isRead ? FontWeight.w600 : FontWeight.w700,
                     fontSize: 16,
+                    color: isRead ? Colors.black : Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                  style: TextStyle(
+                    color: isRead ? Colors.grey.shade600 : Colors.grey.shade700,
+                    fontSize: 14,
+                    fontWeight: isRead ? FontWeight.normal : FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  time,
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                Row(
+                  children: [
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 12,
+                      ),
+                    ),
+                    if (!isRead) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade600,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          "NEW",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),

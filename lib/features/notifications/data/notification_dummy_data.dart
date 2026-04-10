@@ -8,6 +8,7 @@ final List<NotificationModel> dummyNotifications = [
     subtitle: "Get 20% off on all grocery items",
     time: "2 hours ago",
     type: NotificationType.offer,
+    isRead: false, // Unread
     data: {"discount": "20", "category": "grocery"},
   ),
   NotificationModel(
@@ -16,30 +17,43 @@ final List<NotificationModel> dummyNotifications = [
     subtitle: "You earned 50 points from your recent purchase",
     time: "5 hours ago",
     type: NotificationType.points,
+    isRead: false, // Unread
     data: {"points": 50, "orderId": "12345"},
   ),
   NotificationModel(
     id: "3",
+    title: "Order Delivered!",
+    subtitle: "Your order #A1B2C3 has been delivered successfully",
+    time: "8 hours ago",
+    type: NotificationType.general,
+    isRead: false, // Unread
+    data: {"orderId": "A1B2C3"},
+  ),
+  NotificationModel(
+    id: "4",
     title: "Flash Sale!",
     subtitle: "Limited time offer on electronics - Up to 40% off",
     time: "1 day ago",
     type: NotificationType.offer,
+    isRead: true, // Read
     data: {"discount": "40", "category": "electronics"},
   ),
   NotificationModel(
-    id: "4",
+    id: "5",
     title: "Bonus Points!",
     subtitle: "Double points weekend is here! Shop now",
     time: "2 days ago",
     type: NotificationType.points,
+    isRead: true, // Read
     data: {"multiplier": 2},
   ),
   NotificationModel(
-    id: "5",
+    id: "6",
     title: "New Member Offer",
     subtitle: "Welcome! Enjoy 15% off on your first order",
     time: "3 days ago",
     type: NotificationType.offer,
+    isRead: true, // Read
     data: {"discount": "15", "isWelcome": true},
   ),
 ];

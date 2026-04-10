@@ -2,7 +2,7 @@ import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
 import 'package:a_one_gt/features/notifications/view/notifications_page.dart';
-import 'package:a_one_gt/features/notifications/widgets/notification_badge_widget.dart';
+import 'package:a_one_gt/features/notifications/widgets/smart_notification_badge_widget.dart';
 import 'package:a_one_gt/features/product/widgets/product_card_widget.dart';
 import 'package:a_one_gt/features/product/view/product_details_screen.dart';
 import 'package:a_one_gt/features/widgets/custom_sliver_app_bar.dart';
@@ -92,8 +92,7 @@ class _ProductHomePageState extends State<ProductHomePage> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(
-                icon: NotificationBadgeWidget(
-                  count: 3, // You can make this dynamic
+                icon: SmartNotificationBadgeWidget(
                   child: const Icon(
                     Icons.notifications_none,
                     color: Colors.white,
