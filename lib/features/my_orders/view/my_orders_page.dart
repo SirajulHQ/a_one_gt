@@ -1,7 +1,11 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:a_one_gt/features/checkout/view/checkout_page.dart';
+import 'package:a_one_gt/features/my_orders/dummy_data/my_orders_dummy_data.dart';
+import 'package:a_one_gt/features/my_orders/widgets/confirm_return_dialog_widget.dart';
 import 'package:a_one_gt/features/my_orders/widgets/order_card_widget.dart';
+import 'package:a_one_gt/features/my_orders/widgets/return_item_selection_dialog.dart';
+import 'package:a_one_gt/features/my_orders/widgets/return_reason_dialog_widget.dart';
 import 'package:a_one_gt/features/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,44 +19,6 @@ class MyOrdersPage extends StatefulWidget {
 
 class _MyOrdersPageState extends State<MyOrdersPage>
     with TickerProviderStateMixin {
-  final List<Map<String, dynamic>> orders = [
-    {
-      "orderId": "#A1B2C3",
-      "date": "12 Mar 2026",
-      "price": 499,
-      "status": "Delivered",
-      "items": [
-        {"name": "Chicken Burger", "price": 299},
-        {"name": "Pepsi", "price": 200},
-      ],
-      "address": "Dubai Marina",
-      "isExpanded": false,
-    },
-    {
-      "orderId": "#X7Y8Z9",
-      "date": "10 Mar 2026",
-      "price": 899,
-      "status": "Processing",
-      "items": [
-        {"name": "Pizza", "price": 599},
-        {"name": "Fries", "price": 300},
-      ],
-      "address": "JLT Cluster A",
-      "isExpanded": false,
-    },
-    {
-      "orderId": "#P4Q5R6",
-      "date": "05 Mar 2026",
-      "price": 299,
-      "status": "Cancelled",
-      "items": [
-        {"name": "Sandwich", "price": 299},
-      ],
-      "address": "Downtown Dubai",
-      "isExpanded": false,
-    },
-  ];
-
   late List<AnimationController> _controllers;
   late List<Animation<double>> _animations;
 
@@ -91,381 +57,100 @@ class _MyOrdersPageState extends State<MyOrdersPage>
     HapticFeedback.selectionClick();
   }
 
-  void _showReturnReasonDialog(int index) {
-    String? selectedReason;
-    final List<String> returnReasons = [
-      "Damaged product",
-      "Wrong item received",
-      "Poor quality",
-      "Not as described",
-      "Changed my mind",
-      "Other",
-    ];
-
-    showDialog(
-      context: context,
-      builder: (_) => StatefulBuilder(
-        builder: (context, setDialogState) => Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(Dimensions.radius20 + 4),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(title: "My orders"),
+      backgroundColor: Appcolors.background,
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          /// ─── ORDER LIST ───────────────────────────────────────────────
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+              Dimensions.width20,
+              Dimensions.height20,
+              Dimensions.width20,
+              Dimensions.height20 + 20,
             ),
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                /// Gradient Header
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                    vertical: Dimensions.height30,
-                    horizontal: Dimensions.width20,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Appcolors.gradientColor1,
-                        Appcolors.gradientColor2,
-                      ],
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: Dimensions.height45 + 20,
-                        height: Dimensions.height45 + 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withValues(alpha: 0.15),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.25),
-                            width: 2,
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => OrderCardWidget(
+                  order: orders[index],
+                  index: index,
+                  animation: _animations[index],
+                  onToggle: () => _toggleExpand(index),
+                  statusConfig: _getStatusConfig(orders[index]["status"]),
+                  onReturn: orders[index]["status"] == "Delivered"
+                      ? () => _showItemSelectionDialog(index)
+                      : null,
+                  onReorder: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CheckoutPage(
+                          category: "reorder",
+                          reorderItems: List<Map<String, dynamic>>.from(
+                            orders[index]["items"],
                           ),
                         ),
-                        child: Icon(
-                          Icons.assignment_return_rounded,
-                          color: Colors.white,
-                          size: Dimensions.iconSize24 + 4,
-                        ),
                       ),
-                      SizedBox(height: Dimensions.height10),
-                      Text(
-                        "Return Reason",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: Dimensions.font20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(height: Dimensions.height10 / 2),
-                      Text(
-                        "Please select a reason for returning order ${orders[index]["orderId"]}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.8),
-                          fontSize: Dimensions.font16 - 2,
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-
-                /// Reason Selection
-                Padding(
-                  padding: EdgeInsets.all(Dimensions.width20),
-                  child: Column(
-                    children: [
-                      ...returnReasons.map(
-                        (reason) => Container(
-                          margin: EdgeInsets.only(bottom: Dimensions.height10),
-                          child: InkWell(
-                            onTap: () {
-                              HapticFeedback.selectionClick();
-                              setDialogState(() {
-                                selectedReason = reason;
-                              });
-                            },
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.radius15,
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: Dimensions.width15,
-                                vertical: Dimensions.height15,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: selectedReason == reason
-                                      ? Appcolors.gradientColor1
-                                      : Colors.grey.shade300,
-                                  width: selectedReason == reason ? 2 : 1,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  Dimensions.radius15,
-                                ),
-                                color: selectedReason == reason
-                                    ? Appcolors.gradientColor1.withValues(
-                                        alpha: 0.05,
-                                      )
-                                    : Colors.transparent,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    selectedReason == reason
-                                        ? Icons.radio_button_checked
-                                        : Icons.radio_button_unchecked,
-                                    color: selectedReason == reason
-                                        ? Appcolors.gradientColor1
-                                        : Colors.grey.shade400,
-                                    size: Dimensions.iconSize24 - 2,
-                                  ),
-                                  SizedBox(width: Dimensions.width10),
-                                  Expanded(
-                                    child: Text(
-                                      reason,
-                                      style: TextStyle(
-                                        fontSize: Dimensions.font16 - 1,
-                                        fontWeight: selectedReason == reason
-                                            ? FontWeight.w600
-                                            : FontWeight.w400,
-                                        color: selectedReason == reason
-                                            ? Appcolors.gradientColor1
-                                            : Colors.black87,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: Dimensions.height10),
-
-                      /// Continue Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: Dimensions.height45,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: selectedReason != null
-                                ? Appcolors.gradientColor1
-                                : Colors.grey.shade300,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                Dimensions.radius15,
-                              ),
-                            ),
-                          ),
-                          onPressed: selectedReason != null
-                              ? () {
-                                  HapticFeedback.mediumImpact();
-                                  Navigator.pop(context);
-                                  _confirmReturn(index, selectedReason!);
-                                }
-                              : null,
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              color: selectedReason != null
-                                  ? Colors.white
-                                  : Colors.grey.shade500,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: Dimensions.height10),
-
-                      /// Cancel Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: Dimensions.height45,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.black87,
-                            side: BorderSide(color: Colors.grey.shade300),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                Dimensions.radius15,
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                childCount: orders.length,
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  void _confirmReturn(int index, String reason) {
+  void _showItemSelectionDialog(int index) {
     showDialog(
       context: context,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(Dimensions.radius20 + 4),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              /// Gradient Header
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  vertical: Dimensions.height30,
-                  horizontal: Dimensions.width20,
-                ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Appcolors.gradientColor1,
-                      Appcolors.gradientColor2,
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: Dimensions.height45 + 20,
-                      height: Dimensions.height45 + 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.15),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.25),
-                          width: 2,
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.assignment_return_rounded,
-                        color: Colors.white,
-                        size: Dimensions.iconSize24 + 4,
-                      ),
-                    ),
-                    SizedBox(height: Dimensions.height10),
-                    Text(
-                      "Confirm Return",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: Dimensions.font20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: Dimensions.height10 / 2),
-                    Text(
-                      "Return order ${orders[index]["orderId"]} for: $reason",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: Dimensions.font16 - 2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      builder: (_) => ReturnItemSelectionDialog(
+        index: index,
+        orders: orders,
+        onContinue: (index, selectedItems) {
+          _showReturnReasonDialog(index, selectedItems);
+        },
+      ),
+    );
+  }
 
-              /// Buttons
-              Padding(
-                padding: EdgeInsets.all(Dimensions.width20),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: Dimensions.height45,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red.shade50,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.radius15,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          HapticFeedback.mediumImpact();
-                          Navigator.pop(context);
-                          setState(() {
-                            orders[index]["status"] = "Returned";
-                            orders[index]["returnReason"] = reason;
-                          });
-                        },
-                        child: const Text(
-                          "Confirm Return",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
+  void _showReturnReasonDialog(
+    int index,
+    List<Map<String, dynamic>> selectedItems,
+  ) {
+    showDialog(
+      context: context,
+      builder: (_) => ReturnReasonDialogWidget(
+        index: index,
+        selectedItems: selectedItems,
+        orders: orders,
+        onConfirm: _confirmReturn,
+      ),
+    );
+  }
 
-                    SizedBox(height: Dimensions.height10),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: Dimensions.height45,
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.black87,
-                          side: BorderSide(color: Colors.grey.shade300),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.radius15,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.pop(context);
-                        },
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+  void _confirmReturn(
+    int index,
+    String reason,
+    List<Map<String, dynamic>> selectedItems,
+  ) {
+    showDialog(
+      context: context,
+      builder: (_) => ConfirmReturnDialogWidget(
+        index: index,
+        reason: reason,
+        selectedItems: selectedItems,
+        orders: orders,
+        onUpdate: () {
+          setState(() {});
+        },
       ),
     );
   }
@@ -509,56 +194,5 @@ class _MyOrdersPageState extends State<MyOrdersPage>
           label: status,
         );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: "My orders"),
-      backgroundColor: Appcolors.background,
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          /// ─── ORDER LIST ───────────────────────────────────────────────
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-              Dimensions.width20,
-              Dimensions.height20,
-              Dimensions.width20,
-              Dimensions.height20 + 20,
-            ),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => OrderCardWidget(
-                  order: orders[index],
-                  index: index,
-                  animation: _animations[index],
-                  onToggle: () => _toggleExpand(index),
-                  statusConfig: _getStatusConfig(orders[index]["status"]),
-                  onReturn: orders[index]["status"] == "Delivered"
-                      ? () => _showReturnReasonDialog(index)
-                      : null,
-                  onReorder: () {
-                    HapticFeedback.mediumImpact();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CheckoutPage(
-                          category: "reorder",
-                          reorderItems: List<Map<String, dynamic>>.from(
-                            orders[index]["items"],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                childCount: orders.length,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

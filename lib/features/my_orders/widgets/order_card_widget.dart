@@ -193,6 +193,54 @@ class OrderCardWidget extends StatelessWidget {
                     ),
                   ),
 
+                  // Show partial return info if exists
+                  if (order["partialReturn"] != null) ...[
+                    SizedBox(height: Dimensions.height10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: Colors.orange.shade200),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.assignment_return_rounded,
+                            color: Colors.orange.shade600,
+                            size: 18,
+                          ),
+                          SizedBox(width: Dimensions.width10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Partial Return",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.orange.shade700,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  "AED ${order["partialReturn"]["refundAmount"]} refunded",
+                                  style: TextStyle(
+                                    color: Colors.orange.shade600,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+
                   SizedBox(height: Dimensions.height15),
 
                   /// BUTTONS
@@ -299,30 +347,168 @@ class OrderCardWidget extends StatelessWidget {
                                 (order["items"] as List).length,
                                 (i) {
                                   final item = order["items"][i] as Map;
+                                  bool isFullyReturned =
+                                      order["status"] == "Returned";
+
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 6),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          item["name"],
-                                          style: TextStyle(
-                                            color: Colors.grey.shade700,
+                                        Expanded(
+                                          child: Text(
+                                            item["name"],
+                                            style: TextStyle(
+                                              color: isFullyReturned
+                                                  ? Colors.grey.shade500
+                                                  : Colors.grey.shade700,
+                                              decoration: isFullyReturned
+                                                  ? TextDecoration.lineThrough
+                                                  : null,
+                                              decorationColor: isFullyReturned
+                                                  ? Colors.red.shade400
+                                                  : null,
+                                              decorationThickness:
+                                                  isFullyReturned ? 2 : null,
+                                            ),
                                           ),
                                         ),
-                                        Text(
-                                          "AED ${item["price"]}",
-                                          style: TextStyle(
-                                            color: Appcolors.primaryGreen,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "AED ${item["price"]}",
+                                              style: TextStyle(
+                                                color: isFullyReturned
+                                                    ? Colors.grey.shade500
+                                                    : Appcolors.primaryGreen,
+                                                fontWeight: FontWeight.w600,
+                                                decoration: isFullyReturned
+                                                    ? TextDecoration.lineThrough
+                                                    : null,
+                                                decorationColor: isFullyReturned
+                                                    ? Colors.red.shade400
+                                                    : null,
+                                                decorationThickness:
+                                                    isFullyReturned ? 2 : null,
+                                              ),
+                                            ),
+                                            if (isFullyReturned) ...[
+                                              SizedBox(
+                                                width: Dimensions.width10 / 2,
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 6,
+                                                      vertical: 2,
+                                                    ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red.shade50,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: Colors.red.shade200,
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  "Returned",
+                                                  style: TextStyle(
+                                                    color: Colors.red.shade600,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ],
                                         ),
                                       ],
                                     ),
                                   );
                                 },
                               ),
+
+                              // Show returned items if any
+                              if (order["partialReturn"] != null) ...[
+                                SizedBox(height: Dimensions.height10 / 2),
+                                ...List.generate(
+                                  (order["partialReturn"]["returnedItems"]
+                                          as List)
+                                      .length,
+                                  (i) {
+                                    final item =
+                                        order["partialReturn"]["returnedItems"][i]
+                                            as Map;
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              item["name"],
+                                              style: TextStyle(
+                                                color: Colors.grey.shade500,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                decorationColor:
+                                                    Colors.red.shade400,
+                                                decorationThickness: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "AED ${item["price"]}",
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade500,
+                                                  fontWeight: FontWeight.w600,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  decorationColor:
+                                                      Colors.red.shade400,
+                                                  decorationThickness: 2,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: Dimensions.width10 / 2,
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 6,
+                                                      vertical: 2,
+                                                    ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red.shade50,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: Colors.red.shade200,
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  "Returned",
+                                                  style: TextStyle(
+                                                    color: Colors.red.shade600,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
 
                               SizedBox(height: Dimensions.height10),
 
@@ -340,7 +526,8 @@ class OrderCardWidget extends StatelessWidget {
                     ),
                   ),
 
-                  if (order["status"] == "Delivered") ...[
+                  if (order["status"] == "Delivered" &&
+                      (order["items"] as List).isNotEmpty) ...[
                     SizedBox(height: Dimensions.height10),
                     GestureDetector(
                       onTap: () {
