@@ -90,7 +90,7 @@ class _NotificationsPageState extends State<NotificationsPage>
             ), // important for inner spacing
             decoration: BoxDecoration(
               color:
-                  Colors.grey.shade100, // soft background instead of pure white
+                  Appcolors.background, 
               borderRadius: BorderRadius.circular(Dimensions.radius30),
             ),
             child: TabBar(
