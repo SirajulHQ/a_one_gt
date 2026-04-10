@@ -1,3 +1,4 @@
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,16 +21,16 @@ class OfferCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: Dimensions.height20 - 4),
+      padding: EdgeInsets.all(Dimensions.width20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Dimensions.radius20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
+            blurRadius: Dimensions.height15,
+            offset: Offset(0, Dimensions.height10 - 4),
           ),
         ],
       ),
@@ -41,42 +42,50 @@ class OfferCardWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: Dimensions.font20 - 2,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: Dimensions.height10 - 2),
                 Text(
                   description,
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: Dimensions.font16 - 2,
+                  ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: Dimensions.height15 - 3),
                 Text(
                   validUntil,
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: Dimensions.font16 - 4,
+                  ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: Dimensions.height20 - 4),
                 GestureDetector(
                   onTap: () {
                     HapticFeedback.selectionClick();
                     // Handle claim offer
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.width20,
+                      vertical: Dimensions.height10,
                     ),
                     decoration: BoxDecoration(
                       color: color,
-                      borderRadius: BorderRadius.circular(25),
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.radius30 - 5,
+                      ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Claim Offer",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                        fontSize: Dimensions.font16 - 4,
                       ),
                     ),
                   ),
@@ -84,19 +93,19 @@ class OfferCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: Dimensions.width20 - 4),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(Dimensions.width20 - 4),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(Dimensions.radius20 - 4),
             ),
             child: Text(
               discount,
               style: TextStyle(
                 color: color,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: Dimensions.font16,
               ),
             ),
           ),

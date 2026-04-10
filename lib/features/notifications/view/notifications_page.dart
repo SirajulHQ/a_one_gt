@@ -54,17 +54,20 @@ class _NotificationsPageState extends State<NotificationsPage>
             GestureDetector(
               onTap: _markAllAsRead,
               child: Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                margin: EdgeInsets.only(right: Dimensions.width10 - 2),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.width20,
+                  vertical: Dimensions.height10 / 2.5,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(Dimensions.radius15 - 3),
                 ),
-                child: const Text(
+                child: Text(
                   "Mark all read",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: Dimensions.font16 - 4,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -78,12 +81,17 @@ class _NotificationsPageState extends State<NotificationsPage>
         children: [
           // Tab Bar
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            padding: const EdgeInsets.all(4), // important for inner spacing
+            margin: EdgeInsets.symmetric(
+              horizontal: Dimensions.width20 - 4,
+              vertical: Dimensions.height10,
+            ),
+            padding: EdgeInsets.all(
+              Dimensions.height10 / 2.5,
+            ), // important for inner spacing
             decoration: BoxDecoration(
               color:
                   Colors.grey.shade100, // soft background instead of pure white
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(Dimensions.radius30),
             ),
             child: TabBar(
               controller: _tabController,
@@ -91,18 +99,21 @@ class _NotificationsPageState extends State<NotificationsPage>
               dividerColor:
                   Colors.transparent, // removes bottom line (Flutter 3.7+)
               indicator: BoxDecoration(
-                color: Appcolors.primaryGreen,
-                borderRadius: BorderRadius.circular(30),
+                gradient: LinearGradient(
+                  colors: [Appcolors.gradientColor1, Appcolors.gradientColor2],
+                ),
+                borderRadius: BorderRadius.circular(Dimensions.radius30),
+                border: Border.all(color: Colors.white.withOpacity(0.2)),
               ),
               labelColor: Colors.white,
               unselectedLabelColor: Colors.grey.shade600,
-              labelStyle: const TextStyle(
+              labelStyle: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 13,
+                fontSize: Dimensions.font16 - 3,
               ),
-              unselectedLabelStyle: const TextStyle(
+              unselectedLabelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 13,
+                fontSize: Dimensions.font16 - 3,
               ),
               overlayColor: WidgetStateProperty.all(
                 Colors.transparent,
@@ -151,12 +162,12 @@ class _NotificationsPageState extends State<NotificationsPage>
   Widget _buildAllNotifications() {
     final sortedNotifs = sortedNotifications;
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 - 4),
       itemCount: sortedNotifs.length,
       itemBuilder: (context, index) {
         final notification = sortedNotifs[index];
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: Duration(milliseconds: Dimensions.height30.toInt() * 10),
           child: GestureDetector(
             onTap: () => _markAsRead(notification.id),
             child: NotificationCardWidget(
@@ -184,7 +195,7 @@ class _NotificationsPageState extends State<NotificationsPage>
 
   Widget _buildOffersTab() {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: Dimensions.width20 - 4),
       itemCount: dummyOffers.length,
       itemBuilder: (context, index) {
         final offer = dummyOffers[index];

@@ -1,3 +1,4 @@
+import 'package:a_one_gt/core/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
 class NotificationCardWidget extends StatelessWidget {
@@ -23,19 +24,22 @@ class NotificationCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: Dimensions.height15 - 3),
+      padding: EdgeInsets.symmetric(
+        horizontal: Dimensions.width20 - 4,
+        vertical: Dimensions.height15 - 5,
+      ),
       decoration: BoxDecoration(
         color: isRead ? Colors.white : Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(Dimensions.radius20 - 4),
         border: isRead
             ? null
             : Border.all(color: Colors.blue.shade200, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            blurRadius: Dimensions.height15 - 3,
+            offset: Offset(0, Dimensions.height10 / 2.5),
           ),
         ],
       ),
@@ -44,21 +48,25 @@ class NotificationCardWidget extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 48,
-                width: 48,
+                height: Dimensions.height45 + 5,
+                width: Dimensions.height45 + 5,
                 decoration: BoxDecoration(
                   color: iconColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(Dimensions.radius15 - 3),
                 ),
-                child: Icon(icon, color: iconColor, size: 24),
+                child: Icon(
+                  icon,
+                  color: iconColor,
+                  size: Dimensions.iconSize24,
+                ),
               ),
               if (!isRead)
                 Positioned(
                   top: 0,
                   right: 0,
                   child: Container(
-                    width: 12,
-                    height: 12,
+                    width: Dimensions.height15 - 3,
+                    height: Dimensions.height15 - 3,
                     decoration: BoxDecoration(
                       color: Colors.blue.shade600,
                       shape: BoxShape.circle,
@@ -68,7 +76,7 @@ class NotificationCardWidget extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: Dimensions.width20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,45 +85,47 @@ class NotificationCardWidget extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontWeight: isRead ? FontWeight.w600 : FontWeight.w700,
-                    fontSize: 16,
+                    fontSize: Dimensions.font16,
                     color: isRead ? Colors.black : Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: Dimensions.height10 / 2.5),
                 Text(
                   subtitle,
                   style: TextStyle(
                     color: isRead ? Colors.grey.shade600 : Colors.grey.shade700,
-                    fontSize: 14,
+                    fontSize: Dimensions.font16 - 2,
                     fontWeight: isRead ? FontWeight.normal : FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: Dimensions.height10 - 2),
                 Row(
                   children: [
                     Text(
                       time,
                       style: TextStyle(
                         color: Colors.grey.shade500,
-                        fontSize: 12,
+                        fontSize: Dimensions.font16 - 4,
                       ),
                     ),
                     if (!isRead) ...[
-                      const SizedBox(width: 8),
+                      SizedBox(width: Dimensions.width10 - 2),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Dimensions.width10 - 4,
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.blue.shade600,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(
+                            Dimensions.radius15 - 7,
+                          ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "NEW",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: Dimensions.font16 - 6,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -128,16 +138,19 @@ class NotificationCardWidget extends StatelessWidget {
           ),
           if (isOffer)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.width10 - 2,
+                vertical: Dimensions.height10 / 2.5,
+              ),
               decoration: BoxDecoration(
                 color: Colors.orange.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(Dimensions.radius15 - 7),
               ),
-              child: const Text(
+              child: Text(
                 "OFFER",
                 style: TextStyle(
                   color: Colors.orange,
-                  fontSize: 10,
+                  fontSize: Dimensions.font16 - 6,
                   fontWeight: FontWeight.bold,
                 ),
               ),

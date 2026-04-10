@@ -70,9 +70,9 @@ class _SmartNotificationBadgeWidgetState
               child: Center(
                 child: Text(
                   unreadCount > 9 ? '9+' : unreadCount.toString(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 11,
+                    fontSize: Dimensions.font16 - 5,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
