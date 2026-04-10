@@ -1,6 +1,8 @@
 import 'package:a_one_gt/core/apptheme/apptheme.dart';
 import 'package:a_one_gt/dummy_data/dummy_data.dart';
 import 'package:a_one_gt/dummy_data/dummy_model.dart';
+import 'package:a_one_gt/features/notifications/view/notifications_page.dart';
+import 'package:a_one_gt/features/notifications/widgets/notification_badge_widget.dart';
 import 'package:a_one_gt/features/product/widgets/product_card_widget.dart';
 import 'package:a_one_gt/features/product/view/product_details_screen.dart';
 import 'package:a_one_gt/features/widgets/custom_sliver_app_bar.dart';
@@ -83,21 +85,32 @@ class _ProductHomePageState extends State<ProductHomePage> {
           CustomSliverAppBar(
             title: widget.subCategory,
             subtitle: "${displayedProducts.length} products available",
-            // action: Container(
-            //   margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white.withOpacity(0.18),
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            //   child: IconButton(
-            //     icon: const Icon(
-            //       Icons.notifications_none,
-            //       color: Colors.white,
-            //       size: 22,
-            //     ),
-            //     onPressed: () {},
-            //   ),
-            // ),
+            action: Container(
+              margin: const EdgeInsets.only(right: 16, top: 8, bottom: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                icon: NotificationBadgeWidget(
+                  count: 3, // You can make this dynamic
+                  child: const Icon(
+                    Icons.notifications_none,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                ),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NotificationsPage(),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
 
           /// ── Search ─────────────────────────────────
